@@ -1,0 +1,26 @@
+Exercício LIST 1
+
+a) yes
+b) no
+c) H = apple, T = [broccoli, refrigerator]
+d) H = a, T = [b, c, d, e]
+e) H = apples, T = [bananas]
+f) H = a, T = [[b, c, d]] 
+g) H = apples, T = []
+h) no
+i) One = apple, Two = sprouts, T = [fridge, milk]
+j) X = a, Z = [Y|T]
+k) H = apple, T = [Z]
+l) yes
+
+Exercício LIST 2
+
+a) no
+b) C = [a], B = [b]
+c) X = c
+d) no
+e) X = joao, Y = gosta, Z = peixe
+f) no
+g) no
+h) Q = cavalo, P = branco
+i) X = 1, Y = 2, Z = 3, D = [4, 5, 6, 7]
