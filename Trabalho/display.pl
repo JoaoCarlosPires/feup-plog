@@ -45,34 +45,30 @@ printPieces(Currline, _, Line) :-
 	write(Currline),
 	write(' '),
 	printPiece(Line),
-	vert, nl.
+	div, nl.
 
 printPiece([]).
 
 printPiece([0|Line]) :-
-	vert,
+	div,
 	write('  '),
 	printPiece(Line).
 
 printPiece([1|Line]) :-
-	vert,
+	div,
 	blackPiece,
 	write(' '),
 	printPiece(Line).
 
 printPiece([2|Line]) :-
-	vert,
+	div,
 	whitePiece,
 	write(' '),
 	printPiece(Line).
 	
 /* Characteres */
 
-vert :- put_code(9474).
-left_con :- put_code(9500).
-right_con :- put_code(9508).
-middle :- put_code(9532).
-
+div :- put_code(9474).
 blackPiece :- put_code(11044).
 whitePiece :- put_code(11093).
 
