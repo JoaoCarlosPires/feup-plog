@@ -7,7 +7,7 @@
 :- ensure_loaded('display.pl').
 :- ensure_loaded('input.pl').
 
-swack :-
+play :-
 	nl,
 	write('*'), write('*************************************'), write('*'), nl,
 	write('*'), space(37), write('*'), nl,
@@ -16,8 +16,8 @@ swack :-
 	write('*'), write('*************************************'), write('*'), nl,
 	menu.
 
-
 /* MENU */
+
 menu :-
 	write('*'), space(37), write('*'), nl,
 	write('*'), space(8), write('1. Player vs. Player'), space(9), write('*'), nl,
@@ -29,15 +29,38 @@ menu :-
 	playMode(NOption).
 
 playMode(1) :-
-	board(B),
 	nl, nl,
 	write('Player1: '), blackPiece, write('   '),
 	write('Player2: '), whitePiece, nl,
-	printBoard(10, B), nl.
+	display_game(first, 1),
+	display_game(intermediate, 1),
+	display_game(final, 1).
 
 playMode(2) :-
-	board(B),
 	nl, nl,
 	write('Player: '), blackPiece, write('   '),
 	write('Computer: '), whitePiece, nl,
+	display_game(first, 1),
+	display_game(intermediate, 1),
+	display_game(final, 1).
+	
+display_game(first, 1) :-
+	board(A),
+	nl, nl,
+	write('Initial Game Board'), nl,
+	printBoard(10, A), nl.
+
+display_game(intermediate, 1) :-
+	board(B),
+	nl, nl,
+	write('Intermediate Game Board'), nl,
 	printBoard(10, B), nl.
+
+display_game(final, 1) :-
+	board(C),
+	nl, nl,
+	write('Final Game Board'), nl,
+	printBoard(10, C), nl.
+
+initial(first) :- 
+	display_game(first, 1).
