@@ -10,20 +10,20 @@ printBoard(Size, Board) :-
 /* Letras do tabuleiro */
 printLetters(Size, Size) :- 
 	Size > 0,
-	space(4),
+	space(3),
 	printLetter(Size, Size).
 
 printLetter(1, Size) :-
-	space(2),
+	space(4),
 	C is 65+Size-1,
 	put_code(C),
-	space(2), nl.
+	space(3), nl.
 
 printLetter(Line, Size) :-
-	space(2),
+	space(4),
 	C is 65+Size-Line,
 	put_code(C),
-	space(2),
+	space(3),
 	Nextline is Line-1,
 	printLetter(Nextline,Size).
 
@@ -31,7 +31,7 @@ printLetter(Line, Size) :-
 printCells([],_).
 
 printCells([Line|Board], Currentline) :-
-	space(2),
+	space(3),
 	write(Currentline),
 	printLine(Line, Currentline),
 	nl,
@@ -49,18 +49,19 @@ printLine([Cell|Rest], Currentline) :-
 
 /* Peças e divisões */
 printPieces([Top|_]) :-
-	space(2),
 	printPiece(Top).
 
 printPiece(1) :-
 	div,
 	redPiece,
+	write('-X'),
 	space(3).
 
 printPiece(2) :-
 	div,
 	whitePiece,
-	space(2).
+	write(' -X'),
+	space(3).
 	
 /* Characteres */
 
