@@ -10,9 +10,9 @@
 
 ## Descrição do jogo
 
-Swack é um jogo de tabuleiro para dois jogadores (Preto/Branco). O tabuleiro é um quadrado, com células quadradas.
+Swack é um jogo de tabuleiro para dois jogadores (Vermelho/Branco). O tabuleiro é um quadrado, com células quadradas.
 
-No início, todas as células estão preenchidas com peças pretas/brancas de forma alternada, em xadrez. Em tabuleiros com número de células ímpares, a célula central é preenchida com uma peça branca. Cada jogador deverá ter um número de peças suficientes da sua cor fora do tabuleiro.
+No início, todas as células estão preenchidas com peças vermelhas/brancas de forma alternada, em xadrez. Em tabuleiros com número de células ímpares, a célula central é preenchida com uma peça branca. Cada jogador deverá ter um número de peças suficientes da sua cor fora do tabuleiro.
 
 Células adjacentes significam células ortogonalmente adjacentes.
 
@@ -20,7 +20,7 @@ Uma stack é um conjunto de uma ou mais peças empilhadas dentro da mesma célul
 
 Um grupo é um conjunto de stacks adjacentes de cor igual. O tamanho de um grupo corresponde ao número de stacks que o formam.
 
-O jogador com as peças pretas começa e as jogadas são feitas de forma alternada. 
+O jogador com as peças vermelhas começa e as jogadas são feitas de forma alternada. 
 
 Em cada jogada, o jogador poderá:
 

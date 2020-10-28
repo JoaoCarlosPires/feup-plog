@@ -30,7 +30,7 @@ menu :-
 
 playMode(1) :-
 	nl, nl,
-	write('Player1: '), blackPiece, write('   '),
+	write('Player1: '), redPiece, write('   '),
 	write('Player2: '), whitePiece, nl,
 	display_game(first, 1),
 	display_game(intermediate, 1),
@@ -38,7 +38,7 @@ playMode(1) :-
 
 playMode(2) :-
 	nl, nl,
-	write('Player: '), blackPiece, write('   '),
+	write('Player: '), redPiece, write('   '),
 	write('Computer: '), whitePiece, nl,
 	display_game(first, 1),
 	display_game(intermediate, 1),
@@ -48,19 +48,19 @@ display_game(first, 1) :-
 	board(A),
 	nl, nl,
 	write('Initial Game Board'), nl,
-	printBoard(10, A), nl.
+	printBoard(4, A), nl.
 
 display_game(intermediate, 1) :-
 	board(B),
 	nl, nl,
 	write('Intermediate Game Board'), nl,
-	printBoard(10, B), nl.
+	printBoard(4, B), nl.
 
 display_game(final, 1) :-
 	board(C),
 	nl, nl,
 	write('Final Game Board'), nl,
-	printBoard(10, C), nl.
+	printBoard(4, C), nl.
 
 initial(first) :- 
 	display_game(first, 1).

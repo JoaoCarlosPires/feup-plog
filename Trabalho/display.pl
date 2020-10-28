@@ -5,7 +5,7 @@
 printBoard(Size, Board) :-
 	nl, 
 	printLetters(Size, Size),
-	printCells(0, Size, Board).
+	printCells(Board, 0).
 
 /* Letras do tabuleiro */
 printLetters(Size, Size) :- 
@@ -28,49 +28,49 @@ printLetter(Line, Size) :-
 	printLetter(Nextline,Size).
 
 /* Tabuleiro */
-printCells(_,_, []).
+printCells([],_).
 
-printCells(0, Size, [Line|Board]) :-
-	printPieces(0, Size, Line),
-	printCells(1, Size, Board).
-
-printCells(Currentline, Size, [Line|Board]) :-
-	printPieces(Currentline, Size, Line),
+printCells([Line|Board], Currentline) :-
+	space(2),
+	write(Currentline),
+	printLine(Line, Currentline),
+	nl,
 	Nextline is Currentline+1,
-	printCells(Nextline, Size, Board).
+	printCells(Board, Nextline).
+
+/* Linhas */
+
+printLine([], _).
+
+printLine([Cell|Rest], Currentline) :-
+	printPieces(Cell),
+	Nextline is Currentline+1,
+	printLine(Rest, Nextline).
 
 /* Peças e divisões */
-printPieces(Currline, _, Line) :-
+printPieces([Top|_]) :-
 	space(2),
-	write(Currline),
-	space(2),
-	printPiece(Line),
-	div, nl.
+	printPiece(Top).
 
-printPiece([]).
-
-printPiece([0|Line]) :-
+printPiece(1) :-
 	div,
-	space(2),
-	printPiece(Line).
+	redPiece,
+	space(3).
 
-printPiece([1|Line]) :-
-	div,
-	blackPiece,
-	space(3),
-	printPiece(Line).
-
-printPiece([2|Line]) :-
+printPiece(2) :-
 	div,
 	whitePiece,
-	space(2),
-	printPiece(Line).
+	space(2).
 	
 /* Characteres */
 
-div :- put_code(9474).
-blackPiece :- put_code(11044).
-whitePiece :- put_code(11093).
+/* | */
+div :- put_code(9474). 
+
+redPiece :- put_code(11093).
+whitePiece :- put_code(11044).
+
+/* Space */
 
 space(0).
 space(N) :- write(' '), N1 is N-1, space(N1).
