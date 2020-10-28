@@ -43,26 +43,37 @@ printCells([Line|Board], Currentline) :-
 printLine([], _).
 
 printLine([Cell|Rest], Currentline) :-
-	printPieces(Cell),
+	printPiece(Cell),
 	Nextline is Currentline+1,
 	printLine(Rest, Nextline).
 
 /* Peças e divisões */
-printPieces([Top|_]) :-
-	printPiece(Top).
-
-printPiece(1) :-
+printPiece([1|Tail]) :-
 	div,
 	redPiece,
-	write('-X'),
+	write('-'),
+	size(Tail, 0),
 	space(3).
 
-printPiece(2) :-
+printPiece([2|Tail]) :-
 	div,
 	whitePiece,
-	write(' -X'),
+	write(' -'),
+	size(Tail, 0),
 	space(3).
-	
+
+
+/* Tamanho de uma lista */
+
+size([], M) :-
+	J is M+1,
+	write(J).
+
+size([_|Tail], M) :-
+    N is M+1,
+	size(Tail, N).
+    
+
 /* Characteres */
 
 /* | */
