@@ -7,6 +7,7 @@
 :- ensure_loaded('display.pl').
 :- ensure_loaded('input.pl').
 
+
 play :-
 	nl,
 	write('*'), write('*************************************'), write('*'), nl,
@@ -31,36 +32,46 @@ menu :-
 playMode(1) :-
 	nl, nl,
 	write('Player1: '), redPiece, write('   '),
-	write('Player2: '), whitePiece, nl,
-	display_game(first, 1),
-	display_game(intermediate, 1),
-	display_game(final, 1).
+	write('Player2: '), whitePiece, nl.
 
 playMode(2) :-
 	nl, nl,
 	write('Player: '), redPiece, write('   '),
-	write('Computer: '), whitePiece, nl,
-	display_game(first, 1),
-	display_game(intermediate, 1),
-	display_game(final, 1).
+	write('Computer: '), whitePiece, nl.
 	
-display_game(first, 1) :-
-	board(A),
+/*
+	display_game(first, 1). ou display_game(first, 2). 
+	display_game(intermediate, 1). ou display_game(intermediate, 2).
+	display_game(final, 1). ou display_game(final, 1). 
+*/
+
+/* Como o primeiro a jogar é sempre o jogador vermelho
+   (Player 1), qualquer que seja o segundo argumento, 
+   será sempre indicado que o próximo a jogar será o Player 1. */
+display_game(first, _) :-
+	first(A),
 	nl, nl,
 	write('Initial Game Board'), nl,
-	printBoard(4, A), nl.
+	printBoard(4, A), nl,
+	write('Next player: Player 1'), nl.
 
-display_game(intermediate, 1) :-
-	board(B),
+display_game(intermediate, NextPlayer) :-
+	intermediate(A),
 	nl, nl,
 	write('Intermediate Game Board'), nl,
-	printBoard(4, B), nl.
+	printBoard(4, A), nl,
+	write('Next player: Player '), write(NextPlayer), nl.
 
-display_game(final, 1) :-
-	board(C),
+/* Quando o board está no estado final, tanto faz qual o 
+   número do jogador a efetuar a próxima jogada, dado que na realidade
+   já terminou e não haverá mais jogadas.*/
+display_game(final, _) :-
+	final(A),
 	nl, nl,
 	write('Final Game Board'), nl,
-	printBoard(4, C), nl.
+	printBoard(4, A), nl.
 
+/* A passagem do argumento 1 deve-se ao facto de que é sempre
+   o jogador vermelho (Player 1) a começar a jogar */
 initial(first) :- 
 	display_game(first, 1).

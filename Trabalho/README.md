@@ -34,12 +34,129 @@ O jogo termina quando os jogadores decidem passar de forma consecutiva. O jogado
 
 ## Representação interna do estado do jogo
 
-Indicação de como representam o estado do jogo, incluindo tabuleiro (tipicamente usando uma lista de listas com diferentes átomos para as peças), jogador atual, e eventualmente peças capturadas ou ainda por jogar, ou outras informações que possam ser necessárias (dependendo do jogo). Deve incluir exemplos da representação, em Prolog, de estados de jogo inicial, intermédio e final (que deverão estar também no ficheiro de código - ver abaixo), e indicação do significado de cada átomo (ex., como representam as diferentes peças).
+<!--Indicação de como representam o estado do jogo, incluindo tabuleiro (tipicamente usando uma lista de listas com diferentes átomos para as peças), jogador atual, e eventualmente peças capturadas ou ainda por jogar, ou outras informações que possam ser necessárias (dependendo do jogo). Deve incluir exemplos da representação, em Prolog, de estados de jogo inicial, intermédio e final (que deverão estar também no ficheiro de código - ver abaixo), e indicação do significado de cada átomo (ex., como representam as diferentes peças).-->
 
-### Estados do jogo
+Para representar as peças do jogo, optamos por atribuir o valor '1' às peças vermelhas, ou seja, do jogador 1, e o valor '2' às peças brancas, do jogador 2.
 
-![Estados do Jogo](estados_jogo.png)
+O tabuleiro é representado usando uma lista que contem várias listas, cada uma referente a uma linha do tabuleiro. Por sua vez, cada elemento de cada linha, ou seja, cada célula, é também uma lista, sendo o primeiro elemento o valor correspondente à peça do topo (valor 1 - peça vermelha no topo; valor 2 - peça branca no topo). Os restantes elementos, se houver mais do que uma peça na célula, ou seja, se o tamanho da stack for maior do que 1, estão ordenados desde o segundo, isto é, a partir do que está imediatamente abaixo da peça do topo até à base da stack.
+
+No início do jogo, as listas correspondentes às células têm aridade 1 dado que apenas se encontra uma peça por célula. Daí em diante, mediante a jogabilidade, a aridade vai variando. 
+
+A indicação do próximo jogador a efetuar uma jogada surge após a visualização gráfica do tabuleiro. Se o predicado *display_game/2* receber o valor 1 como segundo argumento, o próximo jogador a efetuar uma ação será o jogador 1. Se receber o valor 2, será o jogador 2.
+
+De seguida, mostram-se, respetivamente, as representações em PLOG de três estados do jogo: inicial, intermédio e final.
+
+- Inicial
+
+```
+/* initial board configuration */
+
+		/* LINHA 0 */
+first(A) :- A = [[[2],
+                [1],
+		[2],
+		[1]],
+		/* LINHA 1 */
+		[[1],
+		[2],
+		[1],
+		[2]],
+		/* LINHA 2 */
+		[[2],
+		[1],
+		[2],
+		[1]],
+		/* LINHA 3 */
+		[[1],
+		[2],
+		[1],
+		[2]]].
+```
+
+- Intermédio
+
+```
+/* intermediate board configuration */
+
+			/* LINHA 0 */
+intermediate(A) :- A = [[[1, 1, 2],
+			[1, 1, 2, 1],
+			[2, 2],
+			[1, 2, 1, 1]],
+			/* LINHA 1 */
+			[[1, 2, 1, 2],
+			[1, 1, 2, 1],
+			[1, 2, 1, 1, 2],
+			[2, 1, 2, 1, 1, 1]],
+			/* LINHA 2 */
+			[[2],
+			[1, 1],
+			[2, 2, 2, 2],
+			[2, 2, 2]],
+			/* LINHA 3 */
+			[[1, 2, 2, 2, 2],
+			[2, 1, 1, 1, 1],
+			[1, 2, 2, 2, 1],
+			[1, 1, 1, 2]]].
+```
+
+- Final
+
+```
+/* final board configuration */
+
+		/* LINHA 0 */
+final(A) :- A = [[[1, 1, 2, 1],
+		[1, 1, 2, 1],
+		[1, 2],
+		[1, 2, 1, 1]],
+		/* LINHA 1 */
+		[[1, 2],
+		[2, 1, 1],
+		[2, 2],
+		[2, 1, 2, 1]],
+		/* LINHA 2 */
+		[[1, 2, 2, 1, 2],
+		[2, 1, 1, 1],
+		[2, 2, 2, 2],
+		[1, 2, 2]],
+		/* LINHA 3 */
+		[[1, 2],
+		[1, 1, 1, 1],
+		[1, 2],
+		[2, 1, 1, 2]]].
+```
+
+ToDo: peças extra (fora do tabuleiro)
 
 ## Visualização do estado do jogo
 
-Pequena descrição da implementação do predicado de visualização do estado de jogo (max. 200 palavras)
+<!--Pequena descrição da implementação do predicado de visualização do estado de jogo (max. 200 palavras)-->
+
+ToComplete
+
+### Estados do jogo
+
+- Estado Inicial
+
+```
+display_game(first, 1).
+```
+
+![Estado Inicial do Jogo](first.png)
+
+- Estado Intermédio
+
+```
+display_game(intermediate, 1).
+```
+
+![Estado Intermédio do Jogo](intermediate.png)
+
+- Estado Final
+
+```
+display_game(final, 1).
+```
+
+![Estado Final do Jogo](final.png)
