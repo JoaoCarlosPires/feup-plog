@@ -10,9 +10,9 @@
 
 ## Descrição do jogo
 
-Swack é um jogo de tabuleiro para dois jogadores (Vermelho/Branco). O tabuleiro é um quadrado, com células quadradas.
+Swack é um jogo de tabuleiro para dois jogadores (Vermelho/Branco). O tabuleiro é um quadrado 4x4, com células quadradas.
 
-No início, todas as células estão preenchidas com peças vermelhas/brancas de forma alternada, em xadrez. Em tabuleiros com número de células ímpares, a célula central é preenchida com uma peça branca. Cada jogador deverá ter um número de peças suficientes da sua cor fora do tabuleiro.
+No início, todas as células estão preenchidas com peças vermelhas/brancas de forma alternada, em xadrez. Em tabuleiros com número de células ímpares, a célula central é preenchida com uma peça branca. Cada jogador tem um número de peças infinitas da sua cor fora do tabuleiro.
 
 Células adjacentes significam células ortogonalmente adjacentes.
 
@@ -34,8 +34,6 @@ O jogo termina quando os jogadores decidem passar de forma consecutiva. O jogado
 
 ## Representação interna do estado do jogo
 
-<!--Indicação de como representam o estado do jogo, incluindo tabuleiro (tipicamente usando uma lista de listas com diferentes átomos para as peças), jogador atual, e eventualmente peças capturadas ou ainda por jogar, ou outras informações que possam ser necessárias (dependendo do jogo). Deve incluir exemplos da representação, em Prolog, de estados de jogo inicial, intermédio e final (que deverão estar também no ficheiro de código - ver abaixo), e indicação do significado de cada átomo (ex., como representam as diferentes peças).-->
-
 Para representar as peças do jogo, optamos por atribuir o valor '1' às peças vermelhas, ou seja, do jogador 1, e o valor '2' às peças brancas, do jogador 2.
 
 O tabuleiro é representado usando uma lista que contem várias listas, cada uma referente a uma linha do tabuleiro. Por sua vez, cada elemento de cada linha, ou seja, cada célula, é também uma lista, sendo o primeiro elemento o valor correspondente à peça do topo (valor 1 - peça vermelha no topo; valor 2 - peça branca no topo). Os restantes elementos, se houver mais do que uma peça na célula, ou seja, se o tamanho da stack for maior do que 1, estão ordenados desde o segundo, isto é, a partir do que está imediatamente abaixo da peça do topo até à base da stack.
@@ -43,6 +41,8 @@ O tabuleiro é representado usando uma lista que contem várias listas, cada uma
 No início do jogo, as listas correspondentes às células têm aridade 1 dado que apenas se encontra uma peça por célula. Daí em diante, mediante a jogabilidade, a aridade vai variando. 
 
 A indicação do próximo jogador a efetuar uma jogada surge após a visualização gráfica do tabuleiro. Se o predicado *display_game/2* receber o valor 1 como segundo argumento, o próximo jogador a efetuar uma ação será o jogador 1. Se receber o valor 2, será o jogador 2.
+
+Relativamente às peças extra, inicialmente posicionadas fora do tabuleiro, ainda que na prática tal não fosse possível, decidimos que seriam em número infinito. A razão para tal deve-se ao facto de que a regra de término do jogo não é a ausência de peças, mas sim a passagem em duas jogadas sucessivas. Ou seja, se tivéssemos definido que, por exemplo, cada jogador teria 30 peças da sua cor exteriores ao tabuleiro no início do jogo, como em cada jogada em que o jogador move uma das suas peças tem de colocar uma peça do adversário exterior ao tabuleiro, correríamos o risco de o jogo terminar por falta de peças exteriores, o que não consta nas regras. Desta forma, e para não sobrecarregar a visualização gŕafica do jogo, não colocamos nenhuma informação nos predicados de *display* sobre as peças exteriores uma vez que serão sempre em número infinito. 
 
 De seguida, mostram-se, respetivamente, as representações em PLOG de três estados do jogo: inicial, intermédio e final.
 
@@ -127,15 +127,15 @@ final(A) :- A = [[[1, 1, 2, 1],
 		[2, 1, 1, 2]]].
 ```
 
-ToDo: peças extra (fora do tabuleiro)
-
 ## Visualização do estado do jogo
 
-<!--Pequena descrição da implementação do predicado de visualização do estado de jogo (max. 200 palavras)-->
+Para a implementação do predicado de visualização do estado de jogo, recorremos ao predicado *display_game/2*, que recebe o estado do jogo e o número do jogador a efetuar a próxima jogada. 
 
-ToComplete
+Este predicado, que, para esta entrega, faz *display* de três tabuleiros pré-definidos, invoca o predicado *printBoard/2* que, recebendo o tabuleiro a ser impresso (na versão final será apenas um tabuleiro com alterações a cada jogada) e o tamanho do mesmo, imprimirá as células e as peças nas suas posições. Optou-se por apresentar apenas a peça do topo de cada *stack*, dado que as restantes não influenciam a jogada. Colocamos ainda um valor por célula correspondente ao tamanho da *stack*.
 
-### Estados do jogo
+Após o *display* do tabuleiro, indicamos qual o próximo jogador. 
+
+Exemplos de 3 estados do jogo (o estado inicial será sempre assim):
 
 - Estado Inicial
 
@@ -143,15 +143,15 @@ ToComplete
 display_game(first, 1).
 ```
 
-![Estado Inicial do Jogo](first.png)
+![Estado Inicial do Jogo](pictures/first.png)
 
 - Estado Intermédio
 
 ```
-display_game(intermediate, 1).
+display_game(intermediate, 2).
 ```
 
-![Estado Intermédio do Jogo](intermediate.png)
+![Estado Intermédio do Jogo](pictures/intermediate.png)
 
 - Estado Final
 
@@ -159,4 +159,24 @@ display_game(intermediate, 1).
 display_game(final, 1).
 ```
 
-![Estado Final do Jogo](final.png)
+![Estado Final do Jogo](pictures/final.png)
+
+Após a invocação do predicado *play/0*, o utilizador deverá indicar o modo de jogo.
+
+O resultado visual após a seleção de uma opção é:
+
+- Player vs Player (Opção 1)
+
+![Player vs Player](pictures/playerplayer.png)
+
+- Player vs Computer (Opção 2)
+
+![Player vs Computer](pictures/playercomputer.png)
+
+- Computer vs Computer (Opção 3)
+
+![Computer vs Computer](pictures/computercomputer.png)
+
+Após a indicação da cor da peça de cada jogador, para esta entrega, aparecem então os 3 tabuleiros/estados de jogo. 
+
+Na entrega final, após a escolha do modo de jogo, aparecerá apenas o tabuleiro no seu estado inicial.
