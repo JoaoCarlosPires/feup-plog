@@ -44,7 +44,7 @@ A indicação do próximo jogador a efetuar uma jogada surge após a visualizaç
 
 Relativamente às peças extra, inicialmente posicionadas fora do tabuleiro, ainda que na prática tal não fosse possível, decidimos que seriam em número infinito. A razão para tal deve-se ao facto de que a regra de término do jogo não é a ausência de peças, mas sim a passagem em duas jogadas sucessivas. Ou seja, se tivéssemos definido que, por exemplo, cada jogador teria 30 peças da sua cor exteriores ao tabuleiro no início do jogo, como em cada jogada em que o jogador move uma das suas peças tem de colocar uma peça do adversário exterior ao tabuleiro, correríamos o risco de o jogo terminar por falta de peças exteriores, o que não consta nas regras. Desta forma, e para não sobrecarregar a visualização gŕafica do jogo, não colocamos nenhuma informação nos predicados de *display* sobre as peças exteriores uma vez que serão sempre em número infinito. 
 
-De seguida, mostram-se, respetivamente, as representações em PLOG de três estados do jogo: inicial, intermédio e final.
+De seguida, mostram-se, respetivamente, as representações em PROLOG de três estados do jogo: inicial, intermédio e final.
 
 - Inicial
 
