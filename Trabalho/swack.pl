@@ -23,10 +23,8 @@ menu :-
 	skip_line,
 	NOption is Option-48,
 	playMode(NOption),
-	display_game(first, 1),
-	display_game(intermediate, 2),
-	display_game(final, 1).
-
+	playCycle.
+	
 drawMenu :-
 	write('*'), space(37), write('*'), nl,
 	write('*'), space(8), write('1. Player vs. Player'), space(9), write('*'), nl,
@@ -50,28 +48,40 @@ playMode(3) :-
 	write('Computer 1: '), redPiece, write('   '),
 	write('Computer 2: '), whitePiece, nl.
 
-display_game(first, NextPlayer) :-
-	first(A),
+display_game(NextPlayer) :-
+	board(A),
 	nl, nl,
 	write('Initial Game Board'), nl,
 	printBoard(4, A), nl,
-	write('Next player: '), write(NextPlayer), nl.
+	Next is NextPlayer + 1,
+	write('Next player: '), write(Next), nl.
 
-display_game(intermediate, NextPlayer) :-
-	intermediate(A),
-	nl, nl,
-	write('Intermediate Game Board'), nl,
-	printBoard(4, A), nl,
-	write('Next player: '), write(NextPlayer), nl.
+playCycle :- 
+	initial(first),
+	repeatCycle(0, 0).
 
-/* Quando o board está no estado final, tanto faz qual o 
-   número do jogador a efetuar a próxima jogada, dado que na realidade
-   já terminou e não haverá mais jogadas. */
-display_game(final, _) :-
-	final(A),
-	nl, nl,
-	write('Final Game Board'), nl,
-	printBoard(4, A), nl.
+repeatCycle(NextPlayer, Pass) :-
+	write('Move or Pass? (move/pass)'),nl,
+	read(Ans),nl,
+	(Ans == pass ->
+		(Pass == 1 -> 
+			winner(A)
+		;
+			Next is NextPlayer + 1,
+			Player is mod(Next, 2),
+			display_game(Player),
+			repeatCycle(Player, 1) 
+		)
+	; 	% makeMove(A),
+		Next is NextPlayer + 1,
+		Player is mod(Next, 2),
+		display_game(Player), 
+		repeatCycle(Player, 0)
+	).
+
+% makeMove(board) :- 
+
+winner(board) :- write('Winner is ...').
 
 initial(first) :- 
-	display_game(first, 1).
+	display_game(0).
