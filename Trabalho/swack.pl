@@ -5,6 +5,7 @@
 :- use_module(library(system)).
 :- ensure_loaded('board.pl').
 :- ensure_loaded('display.pl').
+:- ensure_loaded('input.pl').
 
 play :-
 	nl,
@@ -80,49 +81,58 @@ repeatCycle(NextPlayer, Pass) :-
 		repeatCycle(Player, 0)
 	).
 
-getInputPlay(Col, Lin) :-
-	getColumn(Col),
-	getLine(Lin).
-
-getLine(Lin) :-
-	write('Please specify line '),
-	get_code(Li),
-	skip_line,
-	validateLine(Li, Lin).
-
-getColumn(Col) :- 
-	write('Please specify column '), 
-	get_code(Co),
-	skip_line,
-	validateColumn(Co, Col).
-
-validateColumn(65, Col) :- Col is 0.
-validateColumn(66, Col) :- Col is 1.
-validateColumn(67, Col) :- Col is 2.
-validateColumn(68, Col) :- Col is 3.
-validateColumn(_, Col) :- write('Invalid column letter\n\n'), getColumn(Col).
-
-validateLine(48, Lin) :- Lin is 0.
-validateLine(49, Lin) :- Lin is 1.
-validateLine(50, Lin) :- Lin is 2.
-validateLine(51, Lin) :- Lin is 3.
-validateLine(_, Lin) :- write('Invalid line number\n\n'), getLine(Lin).
-
 makeMove(Board, Next) :-
 	getInputPlay(Col, Lin),
+	getFInputPlay(FCol, FLin),
+
 	nth0(Lin, Board, BoardLine),
 	nth0(Col, BoardLine, BoardCol),
 	nth0(0, BoardCol, P),
+
+	nth0(FLin, Board, FBoardLine),
+	nth0(FCol, FBoardLine, FBoardCol),
+	nth0(0, FBoardCol, FP),
+	
 	NextPlayer is Next + 1,
 	(P \= NextPlayer
-		-> write('Cannot move an adversary piece!\n'),
+		-> write('Cannot move an adversary piece!'), nl,
 		makeMove(Board, Next)
-		; 
-		(P == 1 -> NewP is 2; NewP is 1),
-		myreplace(BoardCol, New, NewP),
-		replace(Col, BoardLine, New, NewLine),
-		replace(Lin, Board, NewLine, NewBoard),
-		write(NewBoard), nl
+		;
+		(NextPlayer == 1 
+			-> (FP == 2
+				-> (P == 1 -> NewP is 2; NewP is 1),
+				myreplace(BoardCol, New, NewP),
+				replace(Col, BoardLine, New, NewLine),
+				replace(Lin, Board, NewLine, NewBoard),
+
+				NewNewP is mod(NewP, 2),
+				FinalP is NewNewP + 1,
+				append([FinalP], [FBoardCol], NewCell),
+				write(NewCell),
+				replace(FCol, FBoardLine, NewCell, NewFLine),
+				replace(FLin, NewBoard, NewFLine, FinalBoard),
+
+				write(FinalBoard)
+				; write('invalid')
+			   )
+			; (FP == 1
+				-> (P == 1 -> NewP is 2; NewP is 1),
+				myreplace(BoardCol, New, NewP),
+				replace(Col, BoardLine, New, NewLine),
+				replace(Lin, Board, NewLine, NewBoard),
+
+				NewNewP is mod(NewP, 2),
+				FinalP is NewNewP + 1,
+				append([FinalP], [FBoardCol], NewCell),
+				write(NewCell),
+				replace(FCol, FBoardLine, NewCell, NewFLine),
+				replace(FLin, NewBoard, NewFLine, FinalBoard),
+
+				write(FinalBoard)
+				; write('invalid')
+			  )
+		) 
+		
 	).
 
 myreplace([Head|Tail], New, Piece) :- append([], [Piece|Tail], New). 
