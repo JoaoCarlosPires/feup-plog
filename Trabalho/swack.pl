@@ -87,49 +87,55 @@ makeMove(Board, Next) :-
 	nth0(FLin, Board, FBoardLine),
 	nth0(FCol, FBoardLine, FBoardCol),
 	nth0(0, FBoardCol, FP),
-	
-	NextPlayer is Next + 1,
-	(P \= NextPlayer
-		-> write('Cannot move an adversary piece!'), nl,
-		makeMove(Board, Next)
-		;
-		(NextPlayer == 1 
-			-> (FP == 2
-				-> (P == 1 -> NewP is 2; NewP is 1),
-				myreplace(BoardCol, New, NewP),
-				replace(Col, BoardLine, New, NewLine),
-				replace(Lin, Board, NewLine, NewBoard),
 
-				NewNewP is mod(NewP, 2),
-				FinalP is NewNewP + 1,
-				add(FinalP, FBoardCol, NewCell),
-				replace(FCol, FBoardLine, NewCell, NewFLine),
-				replace(FLin, NewBoard, NewFLine, FinalBoard),
 
-				Player is mod(NextPlayer, 2),
-				display_game(Player, FinalBoard), 
-				repeatCycle(Player, 0, FinalBoard)
-				; write('invalid')
-			   )
-			; (FP == 1
-				-> (P == 1 -> NewP is 2; NewP is 1),
-				myreplace(BoardCol, New, NewP),
-				replace(Col, BoardLine, New, NewLine),
-				replace(Lin, Board, NewLine, NewBoard),
+	% check if both stacks have the same size
+	(same_length(FBoardCol, BoardCol) ->
+		NextPlayer is Next + 1,
+		(P \= NextPlayer
+			-> write('Cannot move an adversary piece!'), nl,
+			makeMove(Board, Next)
+			;
+			(NextPlayer == 1 
+				-> (FP == 2
+					-> (P == 1 -> NewP is 2; NewP is 1),
+					myreplace(BoardCol, New, NewP),
+					replace(Col, BoardLine, New, NewLine),
+					replace(Lin, Board, NewLine, NewBoard),
 
-				NewNewP is mod(NewP, 2),
-				FinalP is NewNewP + 1,
-				add(FinalP, FBoardCol, NewCell),
-				replace(FCol, FBoardLine, NewCell, NewFLine),
-				replace(FLin, NewBoard, NewFLine, FinalBoard),
+					NewNewP is mod(NewP, 2),
+					FinalP is NewNewP + 1,
+					add(FinalP, FBoardCol, NewCell),
+					replace(FCol, FBoardLine, NewCell, NewFLine),
 
-				Player is mod(NextPlayer, 2),
-				display_game(Player, FinalBoard), 
-				repeatCycle(Player, 0, FinalBoard)
-				; write('invalid')
-			  )
-		) 
-		
+					replace(FLin, NewBoard, NewFLine, FinalBoard),
+
+					Player is mod(NextPlayer, 2),
+					display_game(Player, FinalBoard), 
+					repeatCycle(Player, 0, FinalBoard)
+					; write('invalid')
+				)
+				; (FP == 1
+					-> (P == 1 -> NewP is 2; NewP is 1),
+					myreplace(BoardCol, New, NewP),
+					replace(Col, BoardLine, New, NewLine),
+					replace(Lin, Board, NewLine, NewBoard),
+
+					NewNewP is mod(NewP, 2),
+					FinalP is NewNewP + 1,
+					add(FinalP, FBoardCol, NewCell),
+					replace(FCol, FBoardLine, NewCell, NewFLine),
+					replace(FLin, NewBoard, NewFLine, FinalBoard),
+
+					Player is mod(NextPlayer, 2),
+					display_game(Player, FinalBoard), 
+					repeatCycle(Player, 0, FinalBoard)
+					; write('invalid')
+				)
+			) 	
+		)
+	; write('Stacks dont have the same size'), nl,
+	makeMove(Board, Next)
 	).
 
 add(X,List,[X|List]).
@@ -145,3 +151,4 @@ winner :- write('Winner is ...').
 initial(first) :-
 	board(A),
 	display_game(0, A).
+    
