@@ -54,7 +54,7 @@ display_game(NextPlayer, Board) :-
 	write('Initial Game Board'), nl,
 	printBoard(4, Board), nl,
 	Next is NextPlayer + 1,
-	write('Next player: '), write(Next), nl.
+	write('Current player: '), write(Next), nl.
 
 playCycle :- 
 	initial(first),
@@ -88,51 +88,54 @@ makeMove(Board, Next) :-
 	nth0(FCol, FBoardLine, FBoardCol),
 	nth0(0, FBoardCol, FP),
 
-
 	% check if both stacks have the same size
 	(same_length(FBoardCol, BoardCol) ->
-		NextPlayer is Next + 1,
-		(P \= NextPlayer
-			-> write('Cannot move an adversary piece!'), nl,
-			makeMove(Board, Next)
-			;
-			(NextPlayer == 1 
-				-> (FP == 2
-					-> (P == 1 -> NewP is 2; NewP is 1),
-					myreplace(BoardCol, New, NewP),
-					replace(Col, BoardLine, New, NewLine),
-					replace(Lin, Board, NewLine, NewBoard),
+		(adjacent(Col, Lin, FCol, FLin) ->
+			NextPlayer is Next + 1,
+			(P \= NextPlayer
+				-> write('Cannot move an adversary piece!'), nl,
+				makeMove(Board, Next)
+				;
+				(NextPlayer == 1 
+					-> (FP == 2
+						-> (P == 1 -> NewP is 2; NewP is 1),
+						myreplace(BoardCol, New, NewP),
+						replace(Col, BoardLine, New, NewLine),
+						replace(Lin, Board, NewLine, NewBoard),
 
-					NewNewP is mod(NewP, 2),
-					FinalP is NewNewP + 1,
-					add(FinalP, FBoardCol, NewCell),
-					replace(FCol, FBoardLine, NewCell, NewFLine),
+						NewNewP is mod(NewP, 2),
+						FinalP is NewNewP + 1,
+						add(FinalP, FBoardCol, NewCell),
+						replace(FCol, FBoardLine, NewCell, NewFLine),
 
-					replace(FLin, NewBoard, NewFLine, FinalBoard),
+						replace(FLin, NewBoard, NewFLine, FinalBoard),
 
-					Player is mod(NextPlayer, 2),
-					display_game(Player, FinalBoard), 
-					repeatCycle(Player, 0, FinalBoard)
-					; write('invalid')
-				)
-				; (FP == 1
-					-> (P == 1 -> NewP is 2; NewP is 1),
-					myreplace(BoardCol, New, NewP),
-					replace(Col, BoardLine, New, NewLine),
-					replace(Lin, Board, NewLine, NewBoard),
+						Player is mod(NextPlayer, 2),
+						display_game(Player, FinalBoard), 
+						repeatCycle(Player, 0, FinalBoard)
+						; write('invalid')
+					)
+					; (FP == 1
+						-> (P == 1 -> NewP is 2; NewP is 1),
+						myreplace(BoardCol, New, NewP),
+						replace(Col, BoardLine, New, NewLine),
+						replace(Lin, Board, NewLine, NewBoard),
 
-					NewNewP is mod(NewP, 2),
-					FinalP is NewNewP + 1,
-					add(FinalP, FBoardCol, NewCell),
-					replace(FCol, FBoardLine, NewCell, NewFLine),
-					replace(FLin, NewBoard, NewFLine, FinalBoard),
+						NewNewP is mod(NewP, 2),
+						FinalP is NewNewP + 1,
+						add(FinalP, FBoardCol, NewCell),
+						replace(FCol, FBoardLine, NewCell, NewFLine),
+						replace(FLin, NewBoard, NewFLine, FinalBoard),
 
-					Player is mod(NextPlayer, 2),
-					display_game(Player, FinalBoard), 
-					repeatCycle(Player, 0, FinalBoard)
-					; write('invalid')
-				)
-			) 	
+						Player is mod(NextPlayer, 2),
+						display_game(Player, FinalBoard), 
+						repeatCycle(Player, 0, FinalBoard)
+						; write('invalid')
+					)
+				) 	
+			)
+		; write('Cells arent adjacent'), nl,
+		makeMove(Board, Next)
 		)
 	; write('Stacks dont have the same size'), nl,
 	makeMove(Board, Next)
@@ -141,6 +144,11 @@ makeMove(Board, Next) :-
 add(X,List,[X|List]).
 
 myreplace([Head|Tail], New, Piece) :- append([], [Piece|Tail], New). 
+
+adjacent(C, L1, C, L2) :- L1+1 =:= L2.
+adjacent(C, L1, C, L2) :- L1-1 =:= L2.
+adjacent(C1, L, C2, L) :- C1+1 =:= C2.
+adjacent(C1, L, C2, L) :- C1+1 =:= C2.
 
 replace(I, L, E, K) :-
   nth0(I, L, _, R),
