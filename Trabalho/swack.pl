@@ -6,6 +6,9 @@
 :- ensure_loaded('board.pl').
 :- ensure_loaded('display.pl').
 :- ensure_loaded('input.pl').
+:- ensure_loaded('simplify.pl').
+:- ensure_loaded('winner.pl').
+
 
 play :-
 	nl,
@@ -19,6 +22,7 @@ play :-
 /* MENU */
 
 menu :-
+	resetFile,
 	drawMenu,
 	get_code(Option), 
 	skip_line,
@@ -50,8 +54,7 @@ playMode(3) :-
 	write('Computer 2: '), whitePiece, nl.
 
 display_game(NextPlayer, Board) :-
-	nl, nl,
-	write('Initial Game Board'), nl,
+	nl,	write('Current Game Board'), nl,
 	printBoard(4, Board), nl,
 	Next is NextPlayer + 1,
 	write('Current player: '), write(Next), nl.
@@ -66,7 +69,7 @@ repeatCycle(NextPlayer, Pass, Board) :-
 	read(Ans),nl,
 	(Ans == pass ->
 		(Pass == 1 -> 
-			winner
+			winner(Board)
 		;
 			Next is NextPlayer + 1,
 			Player is mod(Next, 2),
@@ -154,9 +157,45 @@ replace(I, L, E, K) :-
   nth0(I, L, _, R),
   nth0(I, K, E, R).
 
-winner :- write('Winner is ...').
+winner(FinalB) :- 
+	
+	getSimplified(FinalB, Simplified),
+	
+	value(Simplified, 1),
+	value(Simplified, 2),
+	
+	readFile(1, P1Points),
+	readFile(2, P2Points),
+	
+	without_last(P1Points, P1),
+	sort(P1, S1),
+	reverse(S1, Sorted1),
+	
+	without_last(P2Points, P2),
+	sort(P2, S2),
+	reverse(S2, Sorted2),
+	
+	write('The winner is '),
+	getWinner(Sorted1, Sorted2, 0).
+
+getWinner(Points1, Points2, NoHigh) :-
+	nth0(NoHigh, Points1, High1),
+	nth0(NoHigh, Points2, High2),
+	(High1 =:= High2
+		-> getWinner(Points1, Points2, 1)
+		; (High1 > High2
+			-> write('Player 1!\n')
+			; write('Player 2!\n')
+		)
+	).
 
 initial(first) :-
 	board(A),
 	display_game(0, A).
+
+% The without_last predicate is based on
+% https://stackoverflow.com/questions/16174681/how-to-delete-the-last-element-from-a-list-in-prolog
+without_last([_], []).
+without_last([X|Xs], [X|WithoutLast]) :- 
+    without_last(Xs, WithoutLast).
     
