@@ -49,20 +49,19 @@ playMode(3) :-
 	write('Computer 1: '), redPiece, write('   '),
 	write('Computer 2: '), whitePiece, nl.
 
-display_game(NextPlayer) :-
-	board(A),
+display_game(NextPlayer, Board) :-
 	nl, nl,
 	write('Initial Game Board'), nl,
-	printBoard(4, A), nl,
+	printBoard(4, Board), nl,
 	Next is NextPlayer + 1,
 	write('Next player: '), write(Next), nl.
 
 playCycle :- 
 	initial(first),
-	repeatCycle(0, 0).
-
-repeatCycle(NextPlayer, Pass) :-
 	board(A),
+	repeatCycle(0, 0, A).
+
+repeatCycle(NextPlayer, Pass, Board) :-
 	write('Move or Pass? (move/pass)'),nl,
 	read(Ans),nl,
 	(Ans == pass ->
@@ -71,14 +70,10 @@ repeatCycle(NextPlayer, Pass) :-
 		;
 			Next is NextPlayer + 1,
 			Player is mod(Next, 2),
-			display_game(Player),
-			repeatCycle(Player, 1) 
+			display_game(Player, Board),
+			repeatCycle(Player, 1, Board) 
 		)
-	; 	makeMove(A, NextPlayer),
-		Next is NextPlayer + 1,
-		Player is mod(Next, 2),
-		display_game(Player), 
-		repeatCycle(Player, 0)
+	; 	makeMove(Board, NextPlayer)
 	).
 
 makeMove(Board, Next) :-
@@ -107,12 +102,13 @@ makeMove(Board, Next) :-
 
 				NewNewP is mod(NewP, 2),
 				FinalP is NewNewP + 1,
-				append([FinalP], [FBoardCol], NewCell),
-				write(NewCell),
+				add(FinalP, FBoardCol, NewCell),
 				replace(FCol, FBoardLine, NewCell, NewFLine),
 				replace(FLin, NewBoard, NewFLine, FinalBoard),
 
-				write(FinalBoard)
+				Player is mod(NextPlayer, 2),
+				display_game(Player, FinalBoard), 
+				repeatCycle(Player, 0, FinalBoard)
 				; write('invalid')
 			   )
 			; (FP == 1
@@ -123,17 +119,20 @@ makeMove(Board, Next) :-
 
 				NewNewP is mod(NewP, 2),
 				FinalP is NewNewP + 1,
-				append([FinalP], [FBoardCol], NewCell),
-				write(NewCell),
+				add(FinalP, FBoardCol, NewCell),
 				replace(FCol, FBoardLine, NewCell, NewFLine),
 				replace(FLin, NewBoard, NewFLine, FinalBoard),
 
-				write(FinalBoard)
+				Player is mod(NextPlayer, 2),
+				display_game(Player, FinalBoard), 
+				repeatCycle(Player, 0, FinalBoard)
 				; write('invalid')
 			  )
 		) 
 		
 	).
+
+add(X,List,[X|List]).
 
 myreplace([Head|Tail], New, Piece) :- append([], [Piece|Tail], New). 
 
@@ -144,4 +143,5 @@ replace(I, L, E, K) :-
 winner :- write('Winner is ...').
 
 initial(first) :-
-	display_game(0).
+	board(A),
+	display_game(0, A).
