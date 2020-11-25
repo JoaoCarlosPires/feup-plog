@@ -60,26 +60,26 @@ display_game(NextPlayer, Board) :-
 	write('Current player: '), write(Next), nl.
 
 playCycle :- 
-	initial(first),
+	initial(A),
 	board(A),
 	repeatCycle(0, 0, A).
 
 repeatCycle(NextPlayer, Pass, Board) :-
 	write('Move or Pass? (move/pass)'),nl,
 	read(Ans),nl,
+	Next is NextPlayer + 1,
+	Player is mod(Next, 2),
 	(Ans == pass ->
 		(Pass == 1 -> 
-			winner(Board)
+			game_over(Board, Player)
 		;
-			Next is NextPlayer + 1,
-			Player is mod(Next, 2),
 			display_game(Player, Board),
 			repeatCycle(Player, 1, Board) 
 		)
-	; 	makeMove(Board, NextPlayer)
+	; 	move(Board, NextPlayer, 0)
 	).
 
-makeMove(Board, Next) :-
+move(Board, Next, _) :-
 	getInputPlay(Col, Lin),
 	getFInputPlay(FCol, FLin),
 
@@ -97,7 +97,7 @@ makeMove(Board, Next) :-
 			NextPlayer is Next + 1,
 			(P \= NextPlayer
 				-> write('Cannot move an adversary piece!'), nl,
-				makeMove(Board, Next)
+				move(Board, Next, 0)
 				;
 				(NextPlayer == 1 
 					-> (FP == 2
@@ -138,15 +138,15 @@ makeMove(Board, Next) :-
 				) 	
 			)
 		; write('Cells arent adjacent'), nl,
-		makeMove(Board, Next)
+		move(Board, Next, 0)
 		)
 	; write('Stacks dont have the same size'), nl,
-	makeMove(Board, Next)
+	move(Board, Next, 0)
 	).
 
 add(X,List,[X|List]).
 
-myreplace([Head|Tail], New, Piece) :- append([], [Piece|Tail], New). 
+myreplace([_|Tail], New, Piece) :- append([], [Piece|Tail], New). 
 
 adjacent(C, L1, C, L2) :- L1+1 =:= L2.
 adjacent(C, L1, C, L2) :- L1-1 =:= L2.
@@ -157,12 +157,12 @@ replace(I, L, E, K) :-
   nth0(I, L, _, R),
   nth0(I, K, E, R).
 
-winner(FinalB) :- 
+game_over(FinalB, LastPlayer) :- 
 	
 	getSimplified(FinalB, Simplified),
 	
-	value(Simplified, 1),
-	value(Simplified, 2),
+	value(Simplified, 1, 0),
+	value(Simplified, 2, 0),
 	
 	readFile(1, P1Points),
 	readFile(2, P2Points),
@@ -176,20 +176,24 @@ winner(FinalB) :-
 	reverse(S2, Sorted2),
 	
 	write('The winner is '),
-	getWinner(Sorted1, Sorted2, 0).
+	getWinner(Sorted1, Sorted2, LastPlayer).
 
-getWinner(Points1, Points2, NoHigh) :-
-	nth0(NoHigh, Points1, High1),
-	nth0(NoHigh, Points2, High2),
-	(High1 =:= High2
-		-> getWinner(Points1, Points2, 1)
-		; (High1 > High2
+getWinner([], _, 0) :- write('Player 2!\n').
+getWinner([], _, 1) :- write('Player 1!\n').
+
+getWinner(_, [], 1) :- write('Player 1!\n').
+getWinner(_, [], 0) :- write('Player 2!\n').
+
+getWinner([P1|Rest1], [P2|Rest2], LastPlayer) :-
+	(P1 =:= P2
+		-> getWinner(Rest1, Rest2, LastPlayer)
+		; (P1 > P2
 			-> write('Player 1!\n')
 			; write('Player 2!\n')
 		)
 	).
 
-initial(first) :-
+initial(A) :-
 	board(A),
 	display_game(0, A).
 

@@ -1,7 +1,15 @@
 /* START CELL */
 getInputPlay(Col, Lin) :-
+	write('Getting start cell\n'),
+	skip_line,
 	getColumn(Col),
 	getLine(Lin).
+
+/* END CELL */
+getFInputPlay(FCol, FLin) :-
+	write('Getting end cell\n'),
+	getColumn(FCol),
+	getLine(FLin).
 
 getLine(Lin) :-
 	write('Please specify line '),
@@ -27,31 +35,3 @@ validateLine(50, Lin) :- Lin is 2.
 validateLine(51, Lin) :- Lin is 3.
 validateLine(_, Lin) :- write('Invalid line number\n\n'), getLine(Lin).
 
-/* END CELL */
-getFInputPlay(FCol, FLin) :-
-	getFColumn(FCol),
-	getFLine(FLin).
-
-getFLine(FLin) :-
-	write('Please specify line '),
-	get_code(FLi),
-	skip_line,
-	validateLine(FLi, FLin).
-
-getFColumn(FCol) :- 
-	write('Please specify column '), 
-	get_code(FCo),
-	skip_line,
-	validateColumn(FCo, FCol).
-
-validateColumn(65, FCol) :- FCol is 0.
-validateColumn(66, FCol) :- FCol is 1.
-validateColumn(67, FCol) :- FCol is 2.
-validateColumn(68, FCol) :- FCol is 3.
-validateColumn(_, FCol) :- write('Invalid column letter\n\n'), getFColumn(FCol).
-
-validateLine(48, FLin) :- FLin is 0.
-validateLine(49, FLin) :- FLin is 1.
-validateLine(50, FLin) :- FLin is 2.
-validateLine(51, FLin) :- FLin is 3.
-validateLine(_, FLin) :- write('Invalid line number\n\n'), getFLine(FLin).

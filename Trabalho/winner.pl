@@ -12,7 +12,7 @@ de desempate.
 
 /* START */
 
-value(Visited, Disc):-
+value(Visited, Disc, _):-
     value(Visited, Disc, 0, 0).
 
 value(Visited, _, Y, X):-
