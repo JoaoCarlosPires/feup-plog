@@ -86,3 +86,36 @@ whitePiece :- put_code(11044).
 
 space(0).
 space(N) :- write(' '), N1 is N-1, space(N1).
+
+/* Menu and Play Mode */
+
+drawHeader :- 
+	nl,
+	write('*'), write('*************************************'), write('*'), nl,
+	write('*'), space(37), write('*'), nl,
+	write('*'), space(16), write('SWACK'), space(16), write('*'), nl,
+	write('*'), space(37), write('*'), nl,
+	write('*'), write('*************************************'), write('*'), nl.
+
+drawMenu :-
+	write('*'), space(37), write('*'), nl,
+	write('*'), space(8), write('1. Player vs. Player'), space(9), write('*'), nl,
+	write('*'), space(8), write('2. Player vs. Computer'), space(7), write('*'), nl,
+	write('*'), space(8), write('3. Computer vs. Computer'), space(5), write('*'), nl,
+	write('*'), space(37), write('*'), nl,
+	write('*'), write('*************************************'), write('*'), nl.
+
+playMode(1) :-
+	nl, nl,
+	write('Player 1: '), redPiece, write('   '),
+	write('Player 2: '), whitePiece, nl.
+
+playMode(2) :-
+	nl, nl,
+	write('Player 1: '), redPiece, write('   '),
+	write('Computer 2: '), whitePiece, nl.
+
+playMode(3) :-
+	nl, nl,
+	write('Computer 1: '), redPiece, write('   '),
+	write('Computer 2: '), whitePiece, nl.

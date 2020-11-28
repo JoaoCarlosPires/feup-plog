@@ -110,15 +110,26 @@ writeToFile(Content, 2) :-
     open('~/Documentos/PLOG/Trabalho/player2.txt', append, Out),
     write(Out,Content),
     write(Out,'.\n'),
+    close(Out).  
+
+writeToFile(Content, 3) :-
+    open('~/Documentos/PLOG/Trabalho/moves.txt', append, Out),
+    write(Out,Content),
+    write(Out,'.\n'),
     close(Out).      
 
-resetFile :- 
+resetFile(1) :- 
     open('~/Documentos/PLOG/Trabalho/player1.txt', write, Out),
     write(Out,''),
     close(Out),
     open('~/Documentos/PLOG/Trabalho/player2.txt', write, Out2),
     write(Out2,''),
     close(Out2).
+
+resetFile(2) :- 
+    open('~/Documentos/PLOG/Trabalho/moves.txt', write, Out),
+    write(Out,''),
+    close(Out).
 
 readFile(1, Lines) :-
     open('~/Documentos/PLOG/Trabalho/player1.txt', read, In),
@@ -127,6 +138,11 @@ readFile(1, Lines) :-
 
 readFile(2, Lines) :-
     open('~/Documentos/PLOG/Trabalho/player2.txt', read, In),
+    read_file(In,Lines),
+    close(In).
+
+readFile(3, Lines) :-
+    open('~/Documentos/PLOG/Trabalho/moves.txt', read, In),
     read_file(In,Lines),
     close(In).
 
@@ -139,3 +155,18 @@ read_file(Stream,[X|L]) :-
     \+ at_end_of_stream(Stream),
     read(Stream,X),
     read_file(Stream,L).
+
+getWinner([], _, 0) :- write('Player 2!\n').
+getWinner([], _, 1) :- write('Player 1!\n').
+
+getWinner(_, [], 1) :- write('Player 1!\n').
+getWinner(_, [], 0) :- write('Player 2!\n').
+
+getWinner([P1|Rest1], [P2|Rest2], LastPlayer) :-
+	(P1 =:= P2
+		-> getWinner(Rest1, Rest2, LastPlayer)
+		; (P1 > P2
+			-> write('Player 1!\n')
+			; write('Player 2!\n')
+		)
+	).
