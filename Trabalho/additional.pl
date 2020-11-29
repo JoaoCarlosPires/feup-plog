@@ -13,7 +13,7 @@ myreplace([_|Tail], New, Piece) :- append([], [Piece|Tail], New).
 adjacent(C, L1, C, L2) :- L1+1 =:= L2.
 adjacent(C, L1, C, L2) :- L1-1 =:= L2.
 adjacent(C1, L, C2, L) :- C1+1 =:= C2.
-adjacent(C1, L, C2, L) :- C1+1 =:= C2.
+adjacent(C1, L, C2, L) :- C1-1 =:= C2.
 
 replace(I, L, E, K) :-
   nth0(I, L, _, R),

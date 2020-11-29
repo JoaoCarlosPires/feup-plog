@@ -14,13 +14,13 @@ printLetters(Size, Size) :-
 	printLetter(Size, Size).
 
 printLetter(1, Size) :-
-	space(4),
+	space(3),
 	C is 65+Size-1,
 	put_code(C),
 	space(3), nl.
 
 printLetter(Line, Size) :-
-	space(4),
+	space(3),
 	C is 65+Size-Line,
 	put_code(C),
 	space(3),
@@ -58,7 +58,7 @@ printPiece([1|Tail]) :-
 printPiece([2|Tail]) :-
 	div,
 	whitePiece,
-	write(' -'),
+	write('-'),
 	size(Tail, 0),
 	space(3).
 

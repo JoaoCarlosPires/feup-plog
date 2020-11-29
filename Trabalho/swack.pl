@@ -113,34 +113,28 @@ computerMove(Board, Next, NOption, [Lin, Col, FLin, FCol]) :-
 	NextPlayer is Next + 1,
 	
 	(NextPlayer == 1 
-		-> (FP == 2
-			-> myreplace(BoardCol, New, 2),
+		-> 	myreplace(BoardCol, New, 2),
 			replace(Col, BoardLine, New, NewLine),
 			replace(Lin, Board, NewLine, NewBoard),
 
 			add(1, FBoardCol, NewCell),
-			replace(FCol, FBoardLine, NewCell, NewFLine),
+			replace(FCol, NewLine, NewCell, NewFLine),
 			replace(FLin, NewBoard, NewFLine, FinalBoard),
 
 			Player is mod(NextPlayer, 2),
 			display_game(Player, FinalBoard), 
 			repeatCycle(Player, 0, FinalBoard, NOption)
-			; write('invalid')
-		)
-		; (FP == 1
-			-> myreplace(BoardCol, New, 1),
+		;	myreplace(BoardCol, New, 1),
 			replace(Col, BoardLine, New, NewLine),
 			replace(Lin, Board, NewLine, NewBoard),
 
 			add(2, FBoardCol, NewCell),
-			replace(FCol, FBoardLine, NewCell, NewFLine),
+			replace(FCol, NewLine, NewCell, NewFLine),
 			replace(FLin, NewBoard, NewFLine, FinalBoard),
 
 			Player is mod(NextPlayer, 2),
 			display_game(Player, FinalBoard), 
 			repeatCycle(Player, 0, FinalBoard, NOption)
-			; write('invalid')
-		)
 	).
 
 move(Board, Next, NOption) :-
@@ -173,7 +167,7 @@ move(Board, Next, NOption) :-
 						NewNewP is mod(NewP, 2),
 						FinalP is NewNewP + 1,
 						add(FinalP, FBoardCol, NewCell),
-						replace(FCol, FBoardLine, NewCell, NewFLine),
+						replace(FCol, NewLine, NewCell, NewFLine),
 						replace(FLin, NewBoard, NewFLine, FinalBoard),
 
 						Player is mod(NextPlayer, 2),
@@ -190,7 +184,7 @@ move(Board, Next, NOption) :-
 						NewNewP is mod(NewP, 2),
 						FinalP is NewNewP + 1,
 						add(FinalP, FBoardCol, NewCell),
-						replace(FCol, FBoardLine, NewCell, NewFLine),
+						replace(FCol, NewLine, NewCell, NewFLine),
 						replace(FLin, NewBoard, NewFLine, FinalBoard),
 
 						Player is mod(NextPlayer, 2),

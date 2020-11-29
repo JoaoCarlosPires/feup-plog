@@ -101,48 +101,48 @@ get_element_matrix(Matrix, Row, Column, Element) :-
 /* END */
 
 writeToFile(Content, 1) :-
-    open('~/Documentos/PLOG/Trabalho/player1.txt', append, Out),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/player1.txt', append, Out),
     write(Out,Content),
     write(Out,'.\n'),
     close(Out).
 
 writeToFile(Content, 2) :-
-    open('~/Documentos/PLOG/Trabalho/player2.txt', append, Out),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/player2.txt', append, Out),
     write(Out,Content),
     write(Out,'.\n'),
     close(Out).  
 
 writeToFile(Content, 3) :-
-    open('~/Documentos/PLOG/Trabalho/moves.txt', append, Out),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/moves.txt', append, Out),
     write(Out,Content),
     write(Out,'.\n'),
     close(Out).      
 
 resetFile(1) :- 
-    open('~/Documentos/PLOG/Trabalho/player1.txt', write, Out),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/player1.txt', write, Out),
     write(Out,''),
     close(Out),
-    open('~/Documentos/PLOG/Trabalho/player2.txt', write, Out2),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/player2.txt', write, Out2),
     write(Out2,''),
     close(Out2).
 
 resetFile(2) :- 
-    open('~/Documentos/PLOG/Trabalho/moves.txt', write, Out),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/moves.txt', write, Out),
     write(Out,''),
     close(Out).
 
 readFile(1, Lines) :-
-    open('~/Documentos/PLOG/Trabalho/player1.txt', read, In),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/player1.txt', read, In),
     read_file(In,Lines),
     close(In).
 
 readFile(2, Lines) :-
-    open('~/Documentos/PLOG/Trabalho/player2.txt', read, In),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/player2.txt', read, In),
     read_file(In,Lines),
     close(In).
 
 readFile(3, Lines) :-
-    open('~/Documentos/PLOG/Trabalho/moves.txt', read, In),
+    open('~/Documents/FEUP - MIEIC/3rd Year/1st Semester/PLOG/feup-plog/Trabalho/files/moves.txt', read, In),
     read_file(In,Lines),
     close(In).
 
