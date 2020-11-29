@@ -119,3 +119,10 @@ playMode(3) :-
 	nl, nl,
 	write('Computer 1: '), redPiece, write('   '),
 	write('Computer 2: '), whitePiece, nl.
+
+displayDifficulty :-
+	write('*'), write('*************************************'), write('*'), nl,
+	write('*'), space(8), write('Choose Difficulty'), space(12), write('*'), nl,
+	write('*'), space(8), write('1. Normal Difficulty'), space(9), write('*'), nl,
+	write('*'), space(8), write('2. Hard Difficulty'), space(11), write('*'), nl,
+	write('*'), write('*************************************'), write('*'), nl.
