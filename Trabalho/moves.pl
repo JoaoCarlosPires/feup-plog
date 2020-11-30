@@ -14,7 +14,7 @@ validMoves(GameState, Player, Line, Column, ListOfMoves) :-
         validMoves(GameState, Player, NewLine, NewCol, ListOfMoves)
     ).
 
-validMoves(Board, 2, ListOfMoves) :- validMoves(Board, 2, 0, 0, ListOfMoves).
+validMoves(Board, Player, ListOfMoves) :- validMoves(Board, Player, 0, 0, ListOfMoves).
     
 % Top-Left Cell
 getPossibleMoves(GameState, BoardCol, 0, 0) :- 

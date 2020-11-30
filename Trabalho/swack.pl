@@ -36,7 +36,6 @@ playCycle(2) :-
 	get_code(Option), 
 	skip_line,
 	Difficulty is Option-48,
-	write(Difficulty),
 	playMode(2),
 	initial(A),
 	board(A),
@@ -105,17 +104,40 @@ repeatCycle(1, Pass, Board, 2, Difficulty) :-
 	(Difficulty == 1
 		-> Bound is L + 1,
 		random(1, Bound, Index),
-		getPlay(Board, NewList, Index, Difficulty) 
-		; choose_move(Board, 1, NewList, Best)
+		getPlay(Board, NewList, Index, Difficulty, 2, 1) 
+		; choose_move(Board, 1, NewList, Best, 2)
 	)
 	).
 
-repeatCycle(NextPlayer, Pass, Board, 3, Difficulty).
+repeatCycle(NextPlayer, Pass, Board, 3, Difficulty) :-
+	Next is NextPlayer + 1,
+	Player is mod(Next, 2),
+	random(1, 3, PP),
+	(PP == 1 -> 
+		write('Computer '), write(Next), write(' Passed'), nl,
+		(Pass == 1 -> 
+			game_over(Board, Next)
+		;
+			display_game(Player, Board),
+			repeatCycle(Player, 1, Board, 3, Difficulty)
+		)
+	; resetFile(2),
+	validMoves(Board, Next, ListOfMoves),
+	without_last(ListOfMoves, NewList),
+	length(NewList, L),
+	(Difficulty == 1
+		-> Bound is L + 1,
+		random(1, Bound, Index),
+		getPlay(Board, NewList, Index, Difficulty, 3, NextPlayer) 
+		; choose_move(Board, NextPlayer, NewList, Best, 3)
+	)
+	).
+	
 
-choose_move(Board, Player, ListOfMoves, Move) :- choose_move(Board, Player, ListOfMoves, Move, 0).
+choose_move(Board, Player, ListOfMoves, Move, NOption) :- choose_move(Board, Player, ListOfMoves, Move, 0, NOption).
 
-choose_move(Board, _, [], BestMove, _) :- computerMove(Board, 1, 2, BestMove, 2).
-choose_move(GameState, Player, [CurrMove|Others], Move, CurrHigh) :-
+choose_move(Board, Player, [], BestMove, _, NOption) :- !, computerMove(Board, Player, NOption, BestMove, 2).
+choose_move(GameState, Player, [CurrMove|Others], Move, CurrHigh, NOption) :-
 	resetFile(1),
 
 	CurrPlayer is Player + 1,
@@ -135,12 +157,12 @@ choose_move(GameState, Player, [CurrMove|Others], Move, CurrHigh) :-
 	nth0(0, Sorted, High),
 
 	(High >= CurrHigh 
-		-> choose_move(GameState, Player, Others, CurrMove, High) 
-		; choose_move(GameState, Player, Others, Move, CurrHigh)
+		-> choose_move(GameState, Player, Others, CurrMove, High, NOption) 
+		; choose_move(GameState, Player, Others, Move, CurrHigh, NOption)
 	).
 
-getPlay(Board, [Head|_], 1, Difficulty) :- !, computerMove(Board, 1, 2, Head, Difficulty).
-getPlay(Board, [_|Tail], Idx, Difficulty) :- NewI is Idx - 1, getPlay(Board, Tail, NewI, Difficulty).
+getPlay(Board, [Head|_], 1, Difficulty, NOption, Player) :- !, computerMove(Board, Player, NOption, Head, Difficulty).
+getPlay(Board, [_|Tail], Idx, Difficulty, NOption, Player) :- NewI is Idx - 1, getPlay(Board, Tail, NewI, Difficulty, NOption, Player).
 
 simulateMove(Board, Next, FinalBoard, [Lin, Col, FLin, FCol]) :-
 	nth0(Lin, Board, BoardLine),
@@ -172,13 +194,13 @@ simulateMove(Board, Next, FinalBoard, [Lin, Col, FLin, FCol]) :-
 
 computerMove(Board, Next, NOption, [Lin, Col, FLin, FCol], Difficulty) :-
 	write('Computer moving from '), 
+	getCol(Col), 
+	write('-'), 
 	write(Lin), 
-	write(','), 
-	write(Col), 
 	write(' to '), 
-	write(FLin),
-	write(','), 
-	write(FCol), nl,
+	getCol(FCol),
+	write('-'), 
+	write(FLin), nl,
 
 	nth0(Lin, Board, BoardLine),
 	nth0(Col, BoardLine, BoardCol),
@@ -196,7 +218,7 @@ computerMove(Board, Next, NOption, [Lin, Col, FLin, FCol], Difficulty) :-
 			replace(Lin, Board, NewLine, NewBoard),
 
 			add(1, FBoardCol, NewCell),
-			replace(FCol, NewLine, NewCell, NewFLine),
+			(FLin == Lin -> replace(FCol, NewLine, NewCell, NewFLine) ; replace(FCol, FBoardLine, NewCell, NewFLine)),
 			replace(FLin, NewBoard, NewFLine, FinalBoard),
 
 			Player is mod(NextPlayer, 2),
@@ -207,7 +229,7 @@ computerMove(Board, Next, NOption, [Lin, Col, FLin, FCol], Difficulty) :-
 			replace(Lin, Board, NewLine, NewBoard),
 
 			add(2, FBoardCol, NewCell),
-			replace(FCol, NewLine, NewCell, NewFLine),
+			(FLin == Lin -> replace(FCol, NewLine, NewCell, NewFLine) ; replace(FCol, FBoardLine, NewCell, NewFLine)),
 			replace(FLin, NewBoard, NewFLine, FinalBoard),
 
 			Player is mod(NextPlayer, 2),
@@ -237,38 +259,32 @@ move(Board, Next, NOption, Difficulty) :-
 				;
 				(NextPlayer == 1 
 					-> (FP == 2
-						-> (P == 1 -> NewP is 2; NewP is 1),
-						myreplace(BoardCol, New, NewP),
+						-> myreplace(BoardCol, New, 2),
 						replace(Col, BoardLine, New, NewLine),
 						replace(Lin, Board, NewLine, NewBoard),
 
-						NewNewP is mod(NewP, 2),
-						FinalP is NewNewP + 1,
-						add(FinalP, FBoardCol, NewCell),
-						replace(FCol, NewLine, NewCell, NewFLine),
+						add(1, FBoardCol, NewCell),
+						(FLin == Lin -> replace(FCol, NewLine, NewCell, NewFLine) ; replace(FCol, FBoardLine, NewCell, NewFLine)),
 						replace(FLin, NewBoard, NewFLine, FinalBoard),
 
 						Player is mod(NextPlayer, 2),
 						display_game(Player, FinalBoard), 
 						repeatCycle(Player, 0, FinalBoard, NOption, Difficulty)
-						; write('invalid')
+						; write('invalid'), nl, move(Board, Next, 0, Difficulty)
 					)
 					; (FP == 1
-						-> (P == 1 -> NewP is 2; NewP is 1),
-						myreplace(BoardCol, New, NewP),
+						-> myreplace(BoardCol, New, 1),
 						replace(Col, BoardLine, New, NewLine),
 						replace(Lin, Board, NewLine, NewBoard),
 
-						NewNewP is mod(NewP, 2),
-						FinalP is NewNewP + 1,
-						add(FinalP, FBoardCol, NewCell),
-						replace(FCol, NewLine, NewCell, NewFLine),
+						add(2, FBoardCol, NewCell),
+						(FLin == Lin -> replace(FCol, NewLine, NewCell, NewFLine) ; replace(FCol, FBoardLine, NewCell, NewFLine)),
 						replace(FLin, NewBoard, NewFLine, FinalBoard),
 
 						Player is mod(NextPlayer, 2),
 						display_game(Player, FinalBoard), 
 						repeatCycle(Player, 0, FinalBoard, NOption, Difficulty)
-						; write('invalid')
+						; write('invalid'), nl, move(Board, Next, 0, Difficulty)
 					)
 				) 	
 			)
