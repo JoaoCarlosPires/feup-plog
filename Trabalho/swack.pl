@@ -129,12 +129,12 @@ repeatCycle(NextPlayer, Pass, Board, 3, Difficulty) :-
 		-> Bound is L + 1,
 		random(1, Bound, Index),
 		getPlay(Board, NewList, Index, Difficulty, 3, NextPlayer) 
-		; choose_move(Board, NextPlayer, NewList, Best, 3)
+		; choose_move(Board, NextPlayer, NewList, 3)
 	)
 	).
 	
 
-choose_move(Board, Player, ListOfMoves, Move, NOption) :- choose_move(Board, Player, ListOfMoves, Move, 0, NOption).
+choose_move(Board, Player, ListOfMoves, NOption) :- choose_move(Board, Player, ListOfMoves, Move, 0, NOption).
 
 choose_move(Board, Player, [], BestMove, _, NOption) :- !, computerMove(Board, Player, NOption, BestMove, 2).
 choose_move(GameState, Player, [CurrMove|Others], Move, CurrHigh, NOption) :-
