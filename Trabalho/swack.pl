@@ -55,9 +55,9 @@ playCycle(1) :-
 	playMode(1),
 	initial(A),
 	board(A),
-	repeatCycle(0, 0, A, 1).
+	repeatCycle(0, 0, A, 1, 0).
 
-repeatCycle(NextPlayer, Pass, Board, 1) :-
+repeatCycle(NextPlayer, Pass, Board, 1, Difficulty) :-
 	write('Move or Pass? (move/pass)'),nl,
 	read(Ans),nl,
 	Next is NextPlayer + 1,
@@ -69,7 +69,7 @@ repeatCycle(NextPlayer, Pass, Board, 1) :-
 			display_game(Player, Board),
 			repeatCycle(Player, 1, Board, 1) 
 		)
-	; 	move(Board, NextPlayer, 1, 0)
+	; 	move(Board, NextPlayer, 1, Difficulty)
 	).
 
 % Player vs Computer - Player turn
@@ -105,7 +105,7 @@ repeatCycle(1, Pass, Board, 2, Difficulty) :-
 		-> Bound is L + 1,
 		random(1, Bound, Index),
 		getPlay(Board, NewList, Index, Difficulty, 2, 1) 
-		; choose_move(Board, 1, NewList, Best, 2)
+		; choose_move(Board, 1, NewList, 2)
 	)
 	).
 
