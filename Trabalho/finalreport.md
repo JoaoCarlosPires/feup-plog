@@ -9,7 +9,8 @@
 - Turma Prática 5
 
 ## Instalação e Execução do Jogo
-Consultar o ficheiro swack.pl e executar com 'play.' no SicStus.
+**Windows** - consultar o ficheiro swack.pl e executar com 'play.' no SicStus.  
+**Linux** - escrever o path completo dos ficheiros em winner.pl; consultar o ficheiro swack.pl e executar com 'play.' no SicStus.
 
 ## O Jogo Swack
 
@@ -47,89 +48,6 @@ No início do jogo, as listas correspondentes às células têm aridade 1 dado q
 A indicação do próximo jogador a efetuar uma jogada surge após a visualização gráfica do tabuleiro. Se o predicado *display_game/2* receber o valor 1 como segundo argumento, o próximo jogador a efetuar uma ação será o jogador 1. Se receber o valor 2, será o jogador 2.
 
 Relativamente às peças extra, inicialmente posicionadas fora do tabuleiro, ainda que na prática tal não fosse possível, decidimos que seriam em número infinito. A razão para tal deve-se ao facto de que a regra de término do jogo não é a ausência de peças, mas sim a passagem em duas jogadas sucessivas. Ou seja, se tivéssemos definido que, por exemplo, cada jogador teria 30 peças da sua cor exteriores ao tabuleiro no início do jogo, como em cada jogada em que o jogador move uma das suas peças tem de colocar uma peça do adversário exterior ao tabuleiro, correríamos o risco de o jogo terminar por falta de peças exteriores, o que não consta nas regras. Desta forma, e para não sobrecarregar a visualização gŕafica do jogo, não colocamos nenhuma informação nos predicados de *display* sobre as peças exteriores uma vez que serão sempre em número infinito.
-
-De seguida, mostram-se, respetivamente, as representações em PROLOG de três estados do jogo: inicial, intermédio e final.
-
-- Inicial
-
-```
-/* initial board configuration */
-
-		/* LINHA 0 */
-first(A) :- A = [[[2],
-                [1],
-		[2],
-		[1]],
-		/* LINHA 1 */
-		[[1],
-		[2],
-		[1],
-		[2]],
-		/* LINHA 2 */
-		[[2],
-		[1],
-		[2],
-		[1]],
-		/* LINHA 3 */
-		[[1],
-		[2],
-		[1],
-		[2]]].
-```
-
-- Intermédio
-
-```
-/* intermediate board configuration */
-
-			/* LINHA 0 */
-intermediate(A) :- A = [[[1, 1, 2],
-			[1, 1, 2, 1],
-			[2, 2],
-			[1, 2, 1, 1]],
-			/* LINHA 1 */
-			[[1, 2, 1, 2],
-			[1, 1, 2, 1],
-			[1, 2, 1, 1, 2],
-			[2, 1, 2, 1, 1, 1]],
-			/* LINHA 2 */
-			[[2],
-			[1, 1],
-			[2, 2, 2, 2],
-			[2, 2, 2]],
-			/* LINHA 3 */
-			[[1, 2, 2, 2, 2],
-			[2, 1, 1, 1, 1],
-			[1, 2, 2, 2, 1],
-			[1, 1, 1, 2]]].
-```
-
-- Final
-
-```
-/* final board configuration */
-
-		/* LINHA 0 */
-final(A) :- A = [[[1, 1, 2, 1],
-		[1, 1, 2, 1],
-		[1, 2],
-		[1, 2, 1, 1]],
-		/* LINHA 1 */
-		[[1, 2],
-		[2, 1, 1],
-		[2, 2],
-		[2, 1, 2, 1]],
-		/* LINHA 2 */
-		[[1, 2, 2, 1, 2],
-		[2, 1, 1, 1],
-		[2, 2, 2, 2],
-		[1, 2, 2]],
-		/* LINHA 3 */
-		[[1, 2],
-		[1, 1, 1, 1],
-		[1, 2],
-		[2, 1, 1, 2]]].
-```
 
 ### Visualização do estado do jogo
 
@@ -189,31 +107,26 @@ As jogadas válidas são as seguintes:
 - a peça no topo da stack escolhida para colocar a peça em jogo, é da cor do adversário
 - o tamanho de ambas as stacks é igual antes da realização do movimento anterior
 - as stacks são ortogonalmente adjacentes  
+
 O predicado `valid_moves(+GameState, +Player, -ListOfMoves)` consiste na obtenção de uma lista com jogadas possíveis. 
 Neste predicado, uma vez que há pontos no tabuleiro que não têm 4 stacks adjacentes,  são analisados os casos especiais tais como os quatro cantos do tabuleiro (2 stacks adjacentes), assim como as stacks pertencentes às linhas e colunas que o delimitam (3 stacks adjacentes).
 
 ### Execução de Jogadas
 O predicado `repeatCycle(Player, Pass, Board, NOption)` inicia uma jogada, recebendo a informação se o jogador pretende jogar ou passar, sendo NOption o modo de jogo selecionado.
-O predicado `move(+GameState, +Move, -NewGameState)` consiste na validação, execução e obtenção de um novo estado de jogo. Começa por receber o input do jogador com `getInputPlay(Col, Lin)` que diz respeito à posição da peça que pretende mover e com `getFInputPlay(Col, Lin)` que considera a posição que esta peça irá ocupar. `validateColumn` e `validateLine` verificam se os inputs do utilizador correspondem de facto a uma coordenada existente. De seguida, averigua-se a exequibilidade da jogada, avaliando se satisfaz as condições anteriormente expostas. Por fim, se passar as verificações com sucesso é finalizada a jogada com o predicado `replace` que reposiciona a peça em jogo.
+O predicado `move(+GameState, +Move, -NewGameState)` consiste na validação, execução e obtenção de um novo estado de jogo. Começa por receber o input do jogador com `getInputPlay(Col, Lin)` que diz respeito à posição da peça que pretende mover e com `getFInputPlay(Col, Lin)` que considera a posição que esta peça irá ocupar. `validateColumn/2` e `validateLine/2` verificam se os inputs do utilizador correspondem de facto a uma coordenada existente. De seguida, averigua-se a exequibilidade da jogada, avaliando se satisfaz as condições anteriormente expostas. Por fim, se passar as verificações com sucesso é finalizada a jogada com o predicado `replace/4` que reposiciona a peça em jogo.
 
 ### Final do Jogo
-O jogo termina se, e só se, ambos os jogadores passarem em duas jogadas sucessivas. Quando estamos perante estas condições, o predicado `game_over(+GameState, -Winner)` identifica qual o vencedor do jogo. Este predicado calcula o tamanho dos grupos de cada jogador.
-Parte do código utilizado para determinar o tamanho dos grupos dos jogadores foi adaptado do trabalho de um ano anterior, da autoria Mário Gil e André Rocha (https://github.com/andrefmrocha/Fuse-GI). Este reaproveitamento está devidamente identificado no respectivo ficheiro de código.
-**missing escrever sobre os ficheiros**
+O jogo termina se, e só se, ambos os jogadores passarem em duas jogadas sucessivas. Quando estamos perante estas condições, o predicado `game_over(+GameState, -Winner)` identifica qual o vencedor do jogo. Neste predicado é calculado o tamanho dos grupos de cada jogador. Estes valores são guardados em ficheiros de texto (player1.txt e player2.txt), sendo posteriormente analisado qual o maior, dando a vitória a um jogador. 
 
 ### Avaliação do Tabuleiro
-**missing**
-`value(+GameState, +Player, -Value)`
+O predicado `value(+GameState, +Player, -Value)` avalia o estado do jogo, analisando o tamanho dos grupos de cada jogador. Para esta análise, no predicado `board_flood/6`, foi utilizado o método Flood Fill: algoritmo usado em arrays multidimensionais de forma a determinar áreas interligadas entre si. Assim, a cada célula percorrida, esta é marcada como visitada e é verificado se existem peças da mesma cor nas posições adjacentes. O algoritmo termina quando não há mais células a visitar.
 
 ### Jogada do Computador
-**missing**
-`choose_move(+GameState, +Player, +Level, -Move)`
+Para a jogada do computador, em primeiro lugar, é gerada aleatoriamente a decisão de passar ou jogar, uma vez que o jogo só termina se ambos os jogadores passarem. Depois de avaliadas as jogadas válidas, no predicado `choose_move(+GameState, +Player, +Level, -Move)` é simulada a jogada do computador, consoante o nível de dificuldade escolhido.
 
-#### Nível Fácil
-A jogada do computador é escolhida aleatoriamente entre o conjunto de jogadas válidas.
+**Nível Fácil** - A jogada do computador é escolhida aleatoriamente entre o conjunto de jogadas válidas.
 
-#### Nível Difícil
-A jogada do computador é escolhida de forma a dificultar o adversário, isto é, de forma a maximizar o número de stacks adjacentes do computador.
+**Nível Difícil** - A jogada do computador é escolhida de forma a dificultar o adversário, isto é, maximizando o tamanho do grupo do computador. Recorre-se, então, ao predicado `value/3`, anteriormente referido, para a avaliação das jogadas possíveis. Após `sort` e `reverse`, são escolhidas as coordenadas da jogada.
 
 
 ## Conclusões
@@ -228,7 +141,3 @@ A jogada do computador é escolhida de forma a dificultar o adversário, isto é
 - https://stackoverflow.com/questions/16174681/how-to-delete-the-last-element-from-a-list-in-prolog
 
 - https://boardgamegeek.com/boardgame/314462/swack
-
-
-
-
