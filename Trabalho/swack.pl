@@ -255,7 +255,7 @@ move(Board, Next, NOption, Difficulty) :-
 			NextPlayer is Next + 1,
 			(P \= NextPlayer
 				-> write('Cannot move an adversary piece!'), nl,
-				move(Board, Next, 0, Difficulty)
+				move(Board, Next, NOption, Difficulty)
 				;
 				(NextPlayer == 1 
 					-> (FP == 2
@@ -270,7 +270,7 @@ move(Board, Next, NOption, Difficulty) :-
 						Player is mod(NextPlayer, 2),
 						display_game(Player, FinalBoard), 
 						repeatCycle(Player, 0, FinalBoard, NOption, Difficulty)
-						; write('invalid'), nl, move(Board, Next, 0, Difficulty)
+						; write('invalid'), nl, move(Board, Next, NOption, Difficulty)
 					)
 					; (FP == 1
 						-> myreplace(BoardCol, New, 1),
@@ -284,15 +284,15 @@ move(Board, Next, NOption, Difficulty) :-
 						Player is mod(NextPlayer, 2),
 						display_game(Player, FinalBoard), 
 						repeatCycle(Player, 0, FinalBoard, NOption, Difficulty)
-						; write('invalid'), nl, move(Board, Next, 0, Difficulty)
+						; write('invalid'), nl, move(Board, Next, NOption, Difficulty)
 					)
 				) 	
 			)
 		; write('Cells arent adjacent'), nl,
-		move(Board, Next, 0, Difficulty)
+		move(Board, Next, NOption, Difficulty)
 		)
 	; write('Stacks dont have the same size'), nl,
-	move(Board, Next, 0, Difficulty)
+	move(Board, Next, NOption, Difficulty)
 	).
 
 game_over(FinalB, LastPlayer) :- 
