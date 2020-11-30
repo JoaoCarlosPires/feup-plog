@@ -1,4 +1,4 @@
-/* BOARD */
+/* INITIAL BOARD CONFIGURATION */
 
 board(A) :- A=[
 				/* LINHA 0 */

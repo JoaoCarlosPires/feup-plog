@@ -1,3 +1,6 @@
+% Simplificação do tabuleiro de jogo, de modo a passar de lista de listas de listas (x3)
+% para apenas lista de listas (x2)
+
 getSimplified(ToSimplify, Simplified) :-
 	
 	% Linha 0
@@ -108,7 +111,7 @@ getSimplified(ToSimplify, Simplified) :-
 	append(F10, L14, F11),
 	append(F11, L15, F12),
 
-	% addicionar Linhas à Simplified
+	% Adicionar Linhas à Simplified
     % F3 F6 F9 F12
 	
     add(F3, [], S0),

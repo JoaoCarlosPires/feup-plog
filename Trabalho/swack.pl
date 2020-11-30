@@ -12,6 +12,8 @@
 :- ensure_loaded('additional.pl').
 :- ensure_loaded('moves.pl').
 
+% Predicado Principal
+
 play :-
 	drawHeader,
 	menu.
@@ -31,6 +33,8 @@ display_game(NextPlayer, Board) :-
 	Next is NextPlayer + 1,
 	write('Current player: '), write(Next), nl.
 
+% Player vs Computer
+
 playCycle(2) :- 
 	displayDifficulty,
 	get_code(Option), 
@@ -40,6 +44,8 @@ playCycle(2) :-
 	initial(A),
 	board(A),
 	repeatCycle(0, 0, A, 2, Difficulty).
+
+% Computer vs Computer
 
 playCycle(3) :- 
 	displayDifficulty,
@@ -51,12 +57,15 @@ playCycle(3) :-
 	board(A),
 	repeatCycle(0, 0, A, 3, Difficulty).
 
+% Player vs Player
+
 playCycle(1) :-
 	playMode(1),
 	initial(A),
 	board(A),
 	repeatCycle(0, 0, A, 1, 0).
 
+% Player vs Player
 repeatCycle(NextPlayer, Pass, Board, 1, Difficulty) :-
 	write('Move or Pass? (move/pass)'),nl,
 	read(Ans),nl,
@@ -67,7 +76,7 @@ repeatCycle(NextPlayer, Pass, Board, 1, Difficulty) :-
 			game_over(Board, Player)
 		;
 			display_game(Player, Board),
-			repeatCycle(Player, 1, Board, 1) 
+			repeatCycle(Player, 1, Board, 1, Difficulty) 
 		)
 	; 	move(Board, NextPlayer, 1, Difficulty)
 	).
@@ -109,6 +118,7 @@ repeatCycle(1, Pass, Board, 2, Difficulty) :-
 	)
 	).
 
+% Computer vs Computer
 repeatCycle(NextPlayer, Pass, Board, 3, Difficulty) :-
 	Next is NextPlayer + 1,
 	Player is mod(Next, 2),
@@ -133,7 +143,7 @@ repeatCycle(NextPlayer, Pass, Board, 3, Difficulty) :-
 	)
 	).
 	
-
+% Escolha do melhor movimento de entre os possíveis
 choose_move(Board, Player, ListOfMoves, NOption) :- choose_move(Board, Player, ListOfMoves, Move, 0, NOption).
 
 choose_move(Board, Player, [], BestMove, _, NOption) :- !, computerMove(Board, Player, NOption, BestMove, 2).
@@ -161,17 +171,17 @@ choose_move(GameState, Player, [CurrMove|Others], Move, CurrHigh, NOption) :-
 		; choose_move(GameState, Player, Others, Move, CurrHigh, NOption)
 	).
 
+% Obtenção da jogada na posição Idx da lista de jogadas
 getPlay(Board, [Head|_], 1, Difficulty, NOption, Player) :- !, computerMove(Board, Player, NOption, Head, Difficulty).
 getPlay(Board, [_|Tail], Idx, Difficulty, NOption, Player) :- NewI is Idx - 1, getPlay(Board, Tail, NewI, Difficulty, NOption, Player).
 
+% Simulação do tabuleiro após um movimento
 simulateMove(Board, Next, FinalBoard, [Lin, Col, FLin, FCol]) :-
 	nth0(Lin, Board, BoardLine),
 	nth0(Col, BoardLine, BoardCol),
-	nth0(0, BoardCol, P),
 
 	nth0(FLin, Board, FBoardLine),
 	nth0(FCol, FBoardLine, FBoardCol),
-	nth0(0, FBoardCol, FP),
 
 	NextPlayer is Next + 1,
 	
@@ -192,6 +202,7 @@ simulateMove(Board, Next, FinalBoard, [Lin, Col, FLin, FCol]) :-
 			replace(FLin, NewBoard, NewFLine, FinalBoard)
 	).
 
+% Movimento do computador após obtenção da jogada a efetuar
 computerMove(Board, Next, NOption, [Lin, Col, FLin, FCol], Difficulty) :-
 	write('Computer moving from '), 
 	getCol(Col), 
@@ -204,11 +215,9 @@ computerMove(Board, Next, NOption, [Lin, Col, FLin, FCol], Difficulty) :-
 
 	nth0(Lin, Board, BoardLine),
 	nth0(Col, BoardLine, BoardCol),
-	nth0(0, BoardCol, P),
 
 	nth0(FLin, Board, FBoardLine),
 	nth0(FCol, FBoardLine, FBoardCol),
-	nth0(0, FBoardCol, FP),
 
 	NextPlayer is Next + 1,
 	
@@ -237,6 +246,7 @@ computerMove(Board, Next, NOption, [Lin, Col, FLin, FCol], Difficulty) :-
 			repeatCycle(Player, 0, FinalBoard, NOption, Difficulty)
 	).
 
+% Movimento do jogador
 move(Board, Next, NOption, Difficulty) :-
 	getInputPlay(Col, Lin),
 	getFInputPlay(FCol, FLin),
@@ -295,6 +305,8 @@ move(Board, Next, NOption, Difficulty) :-
 	move(Board, Next, NOption, Difficulty)
 	).
 
+% Predicado que determina o vencedor com base no estado final do tabuleiro (FinalB) 
+% e no último jogador a efetuar uma jogada (LastPlayer)
 game_over(FinalB, LastPlayer) :- 
 
 	getSimplified(FinalB, Simplified),
@@ -317,6 +329,7 @@ game_over(FinalB, LastPlayer) :-
 
 	getWinner(Sorted1, Sorted2, LastPlayer).
 
+% Predicado que invoca o display do tabuleiro no seu estado inicial
 initial(A) :-
 	board(A),
 	display_game(0, A).

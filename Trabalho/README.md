@@ -166,7 +166,7 @@ As jogadas válidas exigem as seguintes condições:
 O predicado `validMoves(+Board, +Player, -ListOfMoves)` consiste na obtenção de uma lista com jogadas possíveis. Uma vez que há pontos no tabuleiro que não têm 4 stacks adjacentes, são analisados os casos especiais (os quatro cantos do tabuleiro - 2 stacks adjacentes ; as stacks pertencentes às linhas e colunas que o delimitam - 3 stacks adjacentes).
 
 ### Execução de Jogadas
-move(Board, Next, NOption, Difficulty)
+
 O predicado `repeatCycle(+Player, +Pass, +Board, +NOption, +Difficulty)` corresponde ao ciclo de jogadas, que depende do modo de jogo (*NOption*), da dificuldade (*Difficulty*, apenas para os modos 2 e 3), do jogador atual e da passagem ou não na jogada anterior.
 
 Se o movimento for feito pelo jogador, utiliza-se o predicado `move(+Board, +Next, +NOption, +Difficulty)`, que consiste na validação, execução e obtenção de um novo estado de jogo. Começa por receber o input do jogador com `getInputPlay(Col, Lin)`, que diz respeito à posição da peça que pretende mover, e com `getFInputPlay(FCol, FLin)`, que considera a posição que esta peça irá ocupar. `validateColumn/2` e `validateLine/2` verificam se os inputs do utilizador correspondem de facto a uma coordenada existente. De seguida, averigua-se a exequibilidade da jogada, avaliando se satisfaz as condições anteriormente expostas. Por fim, se passar as verificações com sucesso, é atualizado o tabuleiro atual e é feita a chamada de `repeatCycle/5`. 

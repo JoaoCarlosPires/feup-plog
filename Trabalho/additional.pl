@@ -10,6 +10,7 @@ final_add(X,List,[List|X]).
 
 myreplace([_|Tail], New, Piece) :- append([], [Piece|Tail], New). 
 
+% Predicados para verificar adjacência de células
 adjacent(C, L1, C, L2) :- L1+1 =:= L2.
 adjacent(C, L1, C, L2) :- L1-1 =:= L2.
 adjacent(C1, L, C2, L) :- C1+1 =:= C2.
