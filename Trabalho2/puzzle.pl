@@ -4,6 +4,7 @@
 :- use_module(library(lists)).
 :- use_module(library(system)).
 :- ensure_loaded('display.pl').
+:- ensure_loaded('arrows.pl').
 
 % right - 1
 % downRight - 2 
@@ -35,21 +36,6 @@ puzzle4(P):- P=[[7,7,3,4],
 				[6,8,4,8],
 				[6,6,5,4]].			
 
-/*
-% puzzle ([X1,Y1,Dir],...).  
-%1st puzzle example
-puzzle1([[1,1,7], [1,2,7], [1,3,3], [1,4,4], 
-		[2,1,2], [2,2,2], [2,3,3], [2,4,4], 
-		[3,1,1], [3,2,6], [3,3,4], [3,4,5], 
-		[4,1,8], [4,2,1], [4,3,5], [4,4,8]]).
-%2nd puzzle example
-puzzle2([[1,1,1], [1,2,2], [1,3,7], [1,4,3], 
-		[2,1,1], [2,2,2], [2,3,4], [2,4,3], 
-		[3,1,6], [3,2,1], [3,3,8], [3,4,8], 
-		[4,1,6], [4,2,1], [4,3,5], [4,4,5]]).
-
-*/ 
-
 puzzle :-
 	nl,
 	nl, write('----------------------------------'),
@@ -58,13 +44,13 @@ puzzle :-
 	nl, write('|                                |'),
 	nl, write('| 1. Exemplo 1      2. Exemplo 2 |'),
 	nl, write('| 3. Exemplo 3      4. Exemplo 4 |'),
-	nl, write('|                                |'),
+	nl, write('|           5. Random            |'),
 	nl, write('----------------------------------'),nl,
 	menu.
 
 /* MENU */
 menu :-
-	menuInput(Option, 1, 4),
+	menuInput(Option, 1, 5),
 	NOption is Option-48,
 	puzzleOption(NOption).
 
@@ -95,6 +81,19 @@ puzzleOption(4) :-
 	puzzle4(P),
 	nl, nl,
 	printPuzzle(4, P), nl.
+
+puzzleOption(5) :-
+	nl,
+	write('Puzzle 5:'),
+	random(1, 5, R),
+	puzzle(R, P),
+	nl, nl,
+	printPuzzle(4, P), nl.
+
+puzzle(1,P):- puzzle1(P).
+puzzle(2,P):- puzzle2(P).
+puzzle(3,P):- puzzle3(P).
+puzzle(4,P):- puzzle4(P).
 
 /* MENU INPUT */
 
