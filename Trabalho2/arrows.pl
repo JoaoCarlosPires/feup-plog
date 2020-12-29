@@ -2,68 +2,80 @@
 	case(Direcao,Linha, Coluna, Puzzle, [], List) */
 
 %Arrow points down
-aponta(7, Lin, Col, Puzzle, Lista, Final) :- 
+aponta(7, Lin, Col, Puzzle, Lista) :- 
 	newLin is Lin + 1,
 	getPos(newLin, Col, Puzzle, Cell),
-	aponta(8, newLin, Col, Puzzle,Lista, Final).
+	(var(Cell) -> aponta(7, NewLine, Col, Board, [Cell|Lista]);
+	aponta(8, newLin, Col, Puzzle,Lista)).
 
 %Arrow points up
-aponta(8, Lin, Col, Puzzle, Lista, Final) :- 
+aponta(8, Lin, Col, Puzzle, Lista) :- 
 	newLin is Lin - 1,
 	getPos(newLin, Col, Puzzle, Cell),
-	aponta(8, newLin, Col, Puzzle,Lista, Final).
+	(var(Cell) -> aponta(8, NewLine, Col, Board, [Cell|Lista]);
+	aponta(8, newLin, Col, Puzzle, Lista)).
 
 %Arrow points right
-aponta(1, Lin, Col, Puzzle, Lista, Final) :- 
+aponta(1, Lin, Col, Puzzle, Lista) :- 
 	newCol is Col + 1,
 	getPos(Lin, newCol, Puzzle, Cell), 
-	aponta(1, Lin, newCol, Puzzle, Lista, Final).
+	(var(Cell) -> aponta(1, NewLine, Col, Board, [Cell|Lista]);
+	aponta(1, Lin, newCol, Puzzle, Lista)).
 	
 %Arrow points down right
-aponta(2, Lin, Col, Puzzle, Lista, Final) :-
+aponta(2, Lin, Col, Puzzle, Lista) :-
 	newCol is Col + 1,
 	getPos(Lin, newCol, Puzzle, Cell),
-	aponta(2, Lin, newCol, Puzzle, Lista, Final);
+	(var(Cell) -> aponta(2, NewLine, Col, Board, [Cell|Lista]);
+	aponta(2, Lin, newCol, Puzzle, Lista));
 	
 	(newLin is Lin + 1,
-	getPos(newLin, newCol, Puzzle, Cell),					
-	aponta(2, newLin, newCol, Puzzle, Lista, Final)).
+	getPos(newLin, newCol, Puzzle, Cell),
+	(var(Cell) -> aponta(2, NewLine, Col, Board, [Cell|Lista]);					
+	aponta(2, newLin, newCol, Puzzle, Lista))).
 	
 %Arrow points down left 
-aponta(3, Lin, Col, Puzzle, Lista, Final) :-
+aponta(3, Lin, Col, Puzzle, Lista) :-
 	newCol is Col + 1,
 	getPos(Lin, newCol, Puzzle, Cell),
-	aponta(3, Lin, newCol, Puzzle, Lista, Final);
+	(var(Cell) -> aponta(3, NewLine, Col, Board, [Cell|Lista]);
+	aponta(3, Lin, newCol, Puzzle, Lista));
 	
 	(newLin is Lin-1,
 	getPos(newLin, newCol, Puzzle, Cell),
-	aponta(3, newLin, newCol, Puzzle, Lista, Final)).
+	(var(Cell) -> aponta(3, NewLine, Col, Board, [Cell|Lista]);
+	aponta(3, newLin, newCol, Puzzle, Lista))).
 
 %Arrow points left
-aponta(4, Lin, Col, Puzzle, Lista, Final) :-
+aponta(4, Lin, Col, Puzzle, Lista) :-
 	newCol is Col - 1,
 	getPos(Lin, newCol, Puzzle, Cell),
-	aponta(4, Lin, newCol, Puzzle, Lista, Final).
+	(var(Cell) -> aponta(4, NewLine, Col, Board, [Cell|Lista]);
+	aponta(4, Lin, newCol, Puzzle, Lista)).
 	
 %Arrow points up left
-aponta(5, Lin, Col, Puzzle, Lista, Final) :-
+aponta(5, Lin, Col, Puzzle, Lista) :-
 	newCol is Col - 1,
 	getPos(Lin, newCol, Puzzle, Cell),
-	aponta(5, Lin, newCol, Puzzle,Lista, Final);
+	(var(Cell) -> aponta(5, NewLine, Col, Board, [Cell|Lista]);
+	aponta(5, Lin, newCol, Puzzle, Lista));
 	
 	(newLin is Lin - 1,
 	getPos(newLin, newCol, Puzzle, Cell),
-	aponta(5, newLin, newCol, Puzzle, Lista, Final)).
+	(var(Cell) -> aponta(5, NewLine, Col, Board, [Cell|Lista]);
+	aponta(5, newLin, newCol, Puzzle, Lista))).
 	
 %Arrow points up right
-aponta(6, Lin, Col, Puzzle,Lista, Final) :-
+aponta(6, Lin, Col, Puzzle,Lista) :-
 	newCol is Col - 1,
 	getPos(Lin, newCol, Puzzle, Cell),
-	aponta(6, Lin, newCol, Puzzle, Lista, Final);
+	(var(Cell) -> aponta(6, NewLine, Col, Board, [Cell|Lista]);
+	aponta(6, Lin, newCol, Puzzle, Lista));
 	
 	(newLin is Lin + 1,
 	getPos(newLin, newCol, Puzzle, Cell),
-	aponta(6, newLin, newCol, Puzzle, Lista, Final)).
+	(var(Cell) -> aponta(6, NewLine, Col, Board, [Cell|Lista]);
+	aponta(6, newLin, newCol, Puzzle, Lista))).
 
 getPos(Lin, Col, Puzzle, Cell) :-
 	nth1(Col, Puzzle, Lin),
