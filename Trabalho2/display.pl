@@ -1,91 +1,114 @@
 /* DISPLAY */
 
-/* Print Puzzle */
-printPuzzle(Size, Puzzle) :-
+/* Print board */
+/* Size - tamanho da lista; Board - lista do tabuleiro */
+printPuzzle(Size, Board) :-
 	nl, 
-	printArrows(0, Size, Puzzle).
+	printCells(Board, 0).
 
-/* Puzzle */
-printArrows(_,_, []).
+/* Tabuleiro */
+printCells([],_).
 
-printArrows(0, Size, [Line|Puzzle]) :-
-	printArrow(0, Size, Line),
-	printArrows(1, Size, Puzzle).
-
-printArrows(Currentline, Size, [Line|Puzzle]) :-
-	printArrow(Currentline, Size, Line),
+printCells([Line|Board], Currentline) :-
+	space(3),
+	printLine(Line, Currentline),
+	nl,
 	Nextline is Currentline+1,
-	printArrows(Nextline, Size, Puzzle).
+	printCells(Board, Nextline).
 
-/* Setas */
-printArrow(Currline, _, Line) :-
-	write(' '),
-	printArrow(Line),
-	nl.
+/* Linhas */
 
-printArrow([]).
+printLine([], _).
 
-printArrow([0|Line]) :-
-	printArrow(Line).
+printLine([Cell|Rest], Currentline) :-
+	printArrow(Cell),
+	Nextline is Currentline+1,
+	printLine(Rest, Nextline).
 
-printArrow([1|Line]) :-
-	write(' '),
-	right,
-	write(' '),
-	printArrow(Line).
+/* Peças e divisões */
+printArrow([1,0|Tail]) :-
+	right_white,
+	space(1).
 
-printArrow([2|Line]) :-
-	write(' '),
-	downright,
-	write(' '),
-	printArrow(Line).
+printArrow([1,1|Tail]) :-
+	right_tan,
+	space(1).
 
-printArrow([3|Line]) :-
-	write(' '),
-	downleft,
-	write(' '),
-	printArrow(Line).
+printArrow([2,1|Tail]) :-
+	downright_tan,
+	space(1).
 
-printArrow([4|Line]) :-
-	write(' '),
-	left,
-	write(' '),
-	printArrow(Line).
+printArrow([2,0|Tail]) :-
+	downright_white,
+	space(1).
 
-printArrow([5|Line]) :-
-	write(' '),
-	upleft,
-	write(' '),
-	printArrow(Line).
+printArrow([3,0|Tail]) :-
+	downleft_white,
+	space(1).
 
-printArrow([6|Line]) :-
-	write(' '),
-	upright,
-	write(' '),
-	printArrow(Line).
+printArrow([3,1|Tail]) :-
+	downleft_tan,
+	space(1).
 
-printArrow([7|Line]) :-
-	write(' '),
-	down,
-	write(' '),
-	printArrow(Line).
+printArrow([4,1|Tail]) :-
+	left_tan,
+	space(1).
 
-printArrow([8|Line]) :-
-	write(' '),
-	up,
-	write(' '),
-	printArrow(Line).	
+printArrow([4,0|Tail]) :-
+	left_white,
+	space(1).
+
+printArrow([5,0|Tail]) :-
+	upleft_white,
+	space(1).
+
+printArrow([5,1|Tail]) :-
+	upleft_tan,
+	space(1).
+
+printArrow([6,1|Tail]) :-
+	upright_tan,
+	space(1).
+
+printArrow([6,0|Tail]) :-
+	upright_white,
+	space(1).
+
+printArrow([8,0|Tail]) :-
+	up_white,
+	space(1).
+
+printArrow([8,1|Tail]) :-
+	up_tan,
+	space(1).
+
+printArrow([7,1|Tail]) :-
+	down_tan,
+	space(1).
+
+printArrow([7,0|Tail]) :-
+	down_white,
+	space(1).
 
 /* Characteres */
 
-up :- put_code(8593).
-down :- put_code(8595).
-right :- put_code(8594).
-left :- put_code(8592).
-upleft :- put_code(8598).
-downleft :- put_code(8601).
-upright :- put_code(8599).
-downright :- put_code(8600).
+up_tan :- put_code(8593).
+down_tan :- put_code(8595).
+right_tan :- put_code(8594).
+left_tan :- put_code(8592).
+upleft_tan :- put_code(8598).
+downleft_tan :- put_code(8601).
+upright_tan :- put_code(8599).
+downright_tan :- put_code(8600).
+
+up_white :- put_code(8657).
+down_white :- put_code(8659).
+right_white :- put_code(8658).
+left_white :- put_code(8656).
+upleft_white :- put_code(8662).
+downleft_white :- put_code(8665).
+upright_white :- put_code(8663).
+downright_white :- put_code(8664).
 
 % right - 1
 % downRight - 2 
@@ -95,4 +118,3 @@ downright :- put_code(8600).
 % upRight - 6 
 % down - 7 
 % up - 8
-
