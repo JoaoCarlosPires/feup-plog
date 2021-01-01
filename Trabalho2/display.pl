@@ -118,3 +118,6 @@ downright_white :- put_code(8664).
 % upRight - 6 
 % down - 7 
 % up - 8
+
+space(0).
+space(N) :- write(' '), N1 is N-1, space(N1).

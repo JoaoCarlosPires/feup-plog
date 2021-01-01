@@ -58,41 +58,76 @@ menu :-
 	puzzleOption(NOption).
 
 puzzleOption(1) :-
+	statistics(walltime, [Start,_]), nl,
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 1:'), 
 	puzzle1(P),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, P), nl,
+	statistics(walltime, [End,_]) ,
+	Time is End - Start ,
+	write('Time: '),
+	write(Time), nl, fd_statistics.
 
 puzzleOption(2) :-
+	statistics(walltime, [Start,_]), nl,
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 2:'), 
 	puzzle2(P),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, P), nl,
+	statistics(walltime, [End,_]) ,
+	Time is End - Start ,
+	write('Time: '),
+	write(Time), nl, fd_statistics.
 
 puzzleOption(3) :-
+	statistics(walltime, [Start,_]), nl,
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 3:'), 
 	puzzle3(P),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, P), nl,
+	statistics(walltime, [End,_]) ,
+	Time is End - Start ,
+	write('Time: '),
+	write(Time), nl, fd_statistics.
 
 puzzleOption(4) :-
+	statistics(walltime, [Start,_]), nl,
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 4:'),
 	puzzle4(P),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, P), nl,
+	statistics(walltime, [End,_]) ,
+	Time is End - Start ,
+	write('Time: '),
+	write(Time), nl, fd_statistics.
 
 puzzleOption(5) :-
+	statistics(walltime, [Start,_]), nl,
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 5:'),
 	random(1, 5, R),
 	puzzle(R, P),
 	nl, nl,
-	printPuzzle(4, P), nl.
-
+	printPuzzle(4, P), nl,
+	statistics(walltime, [End,_]) ,
+	Time is End - Start ,
+	write('Time: '),
+	write(Time), nl, fd_statistics.
+	
 puzzle(1,P):- puzzle1(P).
 puzzle(2,P):- puzzle2(P).
 puzzle(3,P):- puzzle3(P).
@@ -107,3 +142,6 @@ menuInput(Option, Min, Max) :-
 	Option is O.
 
 menuInput(Option, Min, Max) :- menuInput(Option, Min, Max).
+
+right_tan :- put_code(8594).
+right_white :- put_code(8658).
