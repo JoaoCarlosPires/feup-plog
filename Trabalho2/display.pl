@@ -3,14 +3,32 @@
 /* Print board */
 /* Size - tamanho da lista; Board - lista do tabuleiro */
 printPuzzle(Size, Board, 0) :-
-	nl,	write('White Arrows: '), right_white, write('   '),
-	write('Tan Arrows: '), right_tan, nl, nl,
-	write('Initial Puzzle:'), nl,
+	nl, write('Initial Puzzle:'), nl,
 	printCells(Board, 0, 0).
 
 printPuzzle(Size, Board, 1) :-
 	nl,	write('Final Puzzle:'), nl,
 	printCells(Board, 0, 1).
+
+printHeader :-
+	nl,	write('White Arrows: '), 
+	right_white, write(' '),
+	left_white, write(' '),
+	up_white, write(' '),
+	down_white, write(' '),
+	upleft_white, write(' '),
+	downleft_white, write(' '),
+	upright_white, write(' '),
+	downright_white, write(' '), nl,
+	write('Tan Arrows: '), 
+	right_tan, write(' '),
+	left_tan, write(' '),
+	up_tan, write(' '),
+	down_tan, write(' '),
+	upleft_tan, write(' '),
+	downleft_tan, write(' '),
+	upright_tan, write(' '),
+	downright_tan, write(' '), nl.
 
 /* Tabuleiro */
 
@@ -64,23 +82,23 @@ printArrow([8,1]) :- up_tan, space(1).
 
 /* Characteres */
 
-up_tan :- put_code(8593).
-down_tan :- put_code(8595).
-right_tan :- put_code(8594).
-left_tan :- put_code(8592).
-upleft_tan :- put_code(8598).
-downleft_tan :- put_code(8601).
-upright_tan :- put_code(8599).
-downright_tan :- put_code(8600).
+up_tan :- put_code(8593), write('T').
+down_tan :- put_code(8595), write('T').
+right_tan :- put_code(8594), write('T').
+left_tan :- put_code(8592),  write('T').
+upleft_tan :- put_code(8598),  write('T').
+downleft_tan :- put_code(8601),  write('T').
+upright_tan :- put_code(8599),  write('T').
+downright_tan :- put_code(8600),  write('T').
 
-up_white :- put_code(8657).
-down_white :- put_code(8659).
-right_white :- put_code(8658).
-left_white :- put_code(8656).
-upleft_white :- put_code(8662).
-downleft_white :- put_code(8665).
-upright_white :- put_code(8663).
-downright_white :- put_code(8664).
+up_white :- put_code(8593),  write('W').
+down_white :- put_code(8595),  write('W').
+right_white :- put_code(8594),  write('W').
+left_white :- put_code(8592),  write('W').
+upleft_white :- put_code(8598),  write('W').
+downleft_white :- put_code(8601),  write('W').
+upright_white :- put_code(8599),  write('W').
+downright_white :- put_code(8600),  write('W').
 
 % right - 1
 % downRight - 2 
@@ -99,15 +117,28 @@ space(Num) :- write(' '), Num1 is Num-1, space(Num1).
 mainMenu :-
 	nl,
 	nl, write('----------------------------------'),
+	nl, write('|                                |'),
 	nl, write('|      WHITE AND TAN PUZZLES     |'),
+	nl, write('|                                |'),
 	nl, write('|--------------------------------|'),
 	nl, write('|                                |'),
-	nl, write('| 1. Exemplo 1      2. Exemplo 2 |'),
-	nl, write('| 3. Exemplo 3      4. Exemplo 4 |'),
-	nl, write('|           5. Random            |'),
+	nl, write('|  Each puzzle is represented by |'),
+	nl, write('|    a number between 1 and 9    |'),
+	nl, write('|                                |'),
+	nl, write('|      4x4 puzzles - 1 to 6      |'),
+	nl, write('|      5x5 puzzles - 7 to 9      |'),
+	nl, write('|                                |'),
+	nl, write('|    Pick one of those numbers   |'),
+	nl, write('|   so we can solve the puzzle   |'),
+	nl, write('|                                |'),
 	nl, write('----------------------------------'),nl.
 
 puzzle(1,Puzzle):- puzzle1(Puzzle).
 puzzle(2,Puzzle):- puzzle2(Puzzle).
 puzzle(3,Puzzle):- puzzle3(Puzzle).
 puzzle(4,Puzzle):- puzzle4(Puzzle).
+puzzle(5,Puzzle):- puzzle5(Puzzle).
+puzzle(6,Puzzle):- puzzle6(Puzzle).
+puzzle(7,Puzzle):- puzzle7(Puzzle).
+puzzle(8,Puzzle):- puzzle8(Puzzle).
+puzzle(9,Puzzle):- puzzle9(Puzzle).
