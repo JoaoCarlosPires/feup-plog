@@ -42,7 +42,9 @@ setRestrictions(Puzzle) :-
 	domain(Fla, 0, 1),
 	cycle(Fla, Puzzle, 0),
 	labeling([], Fla),
-	write(Fla).
+	printPuzzle(4, Puzzle, 0),
+	printPuzzle(4, Puzzle, 1).
+
 
 cycle([], _, 4).
 cycle([L1, L2, L3, L4|Others], Puzzle, Lin) :-

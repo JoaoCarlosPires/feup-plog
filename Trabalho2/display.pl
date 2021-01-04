@@ -2,29 +2,48 @@
 
 /* Print board */
 /* Size - tamanho da lista; Board - lista do tabuleiro */
-printPuzzle(Size, Board) :-
-	nl, 
-	printCells(Board, 0).
+printPuzzle(Size, Board, 0) :-
+	nl,	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl, nl,
+	write('Initial Puzzle:'), nl,
+	printCells(Board, 0, 0).
+
+printPuzzle(Size, Board, 1) :-
+	nl,	write('Final Puzzle:'), nl,
+	printCells(Board, 0, 1).
 
 /* Tabuleiro */
 
-printCells([],_).
-printCells([Line|Board], Currentline) :-
+printCells([],_,_).
+printCells([Line|Board], Currentline, Init) :-
 	space(3),
-	printLine(Line, Currentline),
+	printLine(Line, Currentline, Init),
 	nl,
 	Nextline is Currentline+1,
-	printCells(Board, Nextline).
+	printCells(Board, Nextline, Init).
 
 /* Linhas */
 
-printLine([], _).
-printLine([Cell|Rest], Currentcol) :-
+printLine([], _, _).
+printLine([Cell|Rest], Currentcol, 1) :-
 	printArrow(Cell),
 	Nextcol is Currentcol+1,
-	printLine(Rest, Nextcol).
+	printLine(Rest, Nextcol, 1).
+printLine([Cell|Rest], Currentcol, 0) :-
+	printArrow2(Cell),
+	Nextcol is Currentcol+1,
+	printLine(Rest, Nextcol, 0).
 
 /* Peças e divisões */
+
+printArrow2([1,_]) :- right_white, space(1).
+printArrow2([2,_]) :- downright_white, space(1).
+printArrow2([3,_]) :- downleft_white, space(1).
+printArrow2([4,_]) :- left_white, space(1).
+printArrow2([5,_]) :- upleft_white, space(1).
+printArrow2([6,_]) :- upright_white, space(1).
+printArrow2([7,_]) :- down_white, space(1).
+printArrow2([8,_]) :- up_white, space(1).
 
 printArrow([1,0]) :- right_white, space(1).
 printArrow([1,1]) :- right_tan, space(1).
@@ -87,52 +106,6 @@ mainMenu :-
 	nl, write('| 3. Exemplo 3      4. Exemplo 4 |'),
 	nl, write('|           5. Random            |'),
 	nl, write('----------------------------------'),nl.
-
-puzzleOption(1, Puzzle) :-
-	write('White Arrows: '), right_white, write('   '),
-	write('Tan Arrows: '), right_tan, nl,
-	nl,
-	write('Puzzle 1:'), 
-	puzzle1(Puzzle),
-	nl, nl,
-	printPuzzle(4, Puzzle), nl.
-
-puzzleOption(2, Puzzle) :-
-	write('White Arrows: '), right_white, write('   '),
-	write('Tan Arrows: '), right_tan, nl,
-	nl,
-	write('Puzzle 2:'), 
-	puzzle2(Puzzle),
-	nl, nl,
-	printPuzzle(4, Puzzle), nl.
-
-puzzleOption(3, Puzzle) :-
-	write('White Arrows: '), right_white, write('   '),
-	write('Tan Arrows: '), right_tan, nl,
-	nl,
-	write('Puzzle 3:'), 
-	puzzle3(Puzzle),
-	nl, nl,
-	printPuzzle(4, Puzzle), nl.
-
-puzzleOption(4, Puzzle) :-
-	write('White Arrows: '), right_white, write('   '),
-	write('Tan Arrows: '), right_tan, nl,
-	nl,
-	write('Puzzle 4:'),
-	puzzle4(Puzzle),
-	nl, nl,
-	printPuzzle(4, Puzzle), nl.
-
-puzzleOption(5, Puzzle) :-
-	write('White Arrows: '), right_white, write('   '),
-	write('Tan Arrows: '), right_tan, nl,
-	nl,
-	write('Puzzle 5:'),
-	random(1, 5, R),
-	puzzle(R, Puzzle),
-	nl, nl,
-	printPuzzle(4, Puzzle), nl.
 
 puzzle(1,Puzzle):- puzzle1(Puzzle).
 puzzle(2,Puzzle):- puzzle2(Puzzle).
