@@ -15,38 +15,14 @@ puzzle :- mainMenu, menu.
 menu :-
 	menuInput(Option, 1, 5),
 	NOption is Option-48,
-	puzzleOption(NOption, P),
-	solve(P).
+	puzzle(NOption, Puzzle),
+	solve(Puzzle).
 
-solve :-
+solve(Puzzle) :-
 	reset_timer,
-	setRestrictions,
+	setRestrictions(Puzzle),
 	print_time,
 	fd_statistics.
-
-setRestrictions :- 
-	%getLetters(Puzzle, Letters),
-	%flatten(Letters, FL),
-	domain([A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P], 0, 1),
-	conditionalRestriction([B, C, D],A),
-	conditionalRestriction([G, L],B),
-	conditionalRestriction([G, K, O],C),
-	conditionalRestriction([G, J, M],D),
-	conditionalRestriction([F, G, H],E),
-	conditionalRestriction([K, P],F),
-	conditionalRestriction([E, F],G),
-	conditionalRestriction([K, N],H),
-	conditionalRestriction([F, C],I),
-	conditionalRestriction([K, L],J),
-	conditionalRestriction([G, C],K),
-	conditionalRestriction([H, D],L),
-	conditionalRestriction([J, G, D],M),
-	conditionalRestriction([O, P],N),
-	conditionalRestriction([J, E],O),
-	conditionalRestriction([K, F, A],P),
-	labeling([], [A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P]),
-	write(A-B-C-D-E-F-G-H-I-J-K-L-M-N-O-P).
-	%cycle(Puzzle, 0).
 
 getLetters([], []).
 getLetters([CurrLine|NextLines], [CurrLetters|Rest]) :-
@@ -58,27 +34,34 @@ getLineLetters([CurrCell|Others], [Curr|Other]) :-
 	getLetter(CurrCell, Curr),
 	getLineLetters(Others, Other).
 
-getLetter([Direction, Letter], L) :- L = Letter.
-getDirection([Direction, Letter], D) :- D = Direction.
+getLetter([Direction, Letter], Letter).
 
-%for each letter, get list of in-direction letters
-%for each obtained list, call conditionalRestriction
+setRestrictions(Puzzle) :-
+	getLetters(Puzzle, Letters),
+	flatten(Letters, Fla),
+	domain(Fla, 0, 1),
+	cycle(Fla, Puzzle, 0),
+	labeling([], Fla),
+	write(Fla).
 
-cycle(_, 4).
-cycle([CurrLine | NextLines], Lin) :- 
-	lineCycle(CurrLine, 0, Lin, [CurrLine | NextLines]),
-	NewL is Lin + 1.
-	cycle(NextLines, NewL).
+cycle([], _, 4).
+cycle([L1, L2, L3, L4|Others], Puzzle, Lin) :-
+	lineCycle([L1, L2, L3, L4], Puzzle, 0, Lin),
+	NewLin is Lin + 1,
+	cycle(Others, Puzzle, NewLin).
 
-lineCycle(_, 4, _, _).
-lineCycle([Cell|Others], Col, Lin, Puzzle) :-
-	getLetter(Cell, L),
-	getDirection(Cell, D),
-	aponta(D, Lin, Col, L, Puzzle, List),
-	conditionalRestriction(List, L),
-	NewC is Col + 1.
-	lineCycle(Others, NewC).
+lineCycle([], _, 4, _).
+lineCycle([CurrLetter|Other], Puzzle, Col, Lin) :-
+	getDir(Puzzle, Lin, Col, Dir),
+	aponta(Dir, Lin, Col, Puzzle, List),
+	conditionalRestriction(List, CurrLetter),
+	NewCol is Col + 1,
+	lineCycle(Other, Puzzle, NewCol, Lin).
 
+getDir(Puzzle, Lin, Col, Dir) :-
+	nth0(Lin, Puzzle, Line),
+	nth0(Col, Line, Cell),
+	nth0(0, Cell, Dir).
 
 reset_timer :- statistics(walltime,_).	
 print_time :-
@@ -86,8 +69,8 @@ print_time :-
 	TS is ((T//10)*10)/1000,
 	nl, write('Time: '), write(TS), write('s'), nl, nl.
 
-conditionalRestriction(List,0) :- length(List, L), NewL is L - 1, sum(List, #=, NewL).
-conditionalRestriction(List,1) :- sum(List, #=, 2).
+conditionalRestriction(Lista,0) :- length(Lista, Len), NewL is Len - 1, sum(Lista, #=, NewL).
+conditionalRestriction(Lista,1) :- sum(Lista, #=, 2).
 
 flatten(List, FlatList) :-
 	flatten(List, [], FlatList0),

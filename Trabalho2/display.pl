@@ -73,7 +73,7 @@ downright_white :- put_code(8664).
 % up - 8
 
 space(0).
-space(N) :- write(' '), N1 is N-1, space(N1).
+space(Num) :- write(' '), Num1 is Num-1, space(Num1).
 
 /* MAIN MENU */
 
@@ -88,53 +88,53 @@ mainMenu :-
 	nl, write('|           5. Random            |'),
 	nl, write('----------------------------------'),nl.
 
-puzzleOption(1, P) :-
+puzzleOption(1, Puzzle) :-
 	write('White Arrows: '), right_white, write('   '),
 	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 1:'), 
-	puzzle1(P),
+	puzzle1(Puzzle),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, Puzzle), nl.
 
-puzzleOption(2, P) :-
+puzzleOption(2, Puzzle) :-
 	write('White Arrows: '), right_white, write('   '),
 	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 2:'), 
-	puzzle2(P),
+	puzzle2(Puzzle),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, Puzzle), nl.
 
-puzzleOption(3, P) :-
+puzzleOption(3, Puzzle) :-
 	write('White Arrows: '), right_white, write('   '),
 	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 3:'), 
-	puzzle3(P),
+	puzzle3(Puzzle),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, Puzzle), nl.
 
-puzzleOption(4, P) :-
+puzzleOption(4, Puzzle) :-
 	write('White Arrows: '), right_white, write('   '),
 	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 4:'),
-	puzzle4(P),
+	puzzle4(Puzzle),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, Puzzle), nl.
 
-puzzleOption(5, P) :-
+puzzleOption(5, Puzzle) :-
 	write('White Arrows: '), right_white, write('   '),
 	write('Tan Arrows: '), right_tan, nl,
 	nl,
 	write('Puzzle 5:'),
 	random(1, 5, R),
-	puzzle(R, P),
+	puzzle(R, Puzzle),
 	nl, nl,
-	printPuzzle(4, P), nl.
+	printPuzzle(4, Puzzle), nl.
 
-puzzle(1,P):- puzzle1(P).
-puzzle(2,P):- puzzle2(P).
-puzzle(3,P):- puzzle3(P).
-puzzle(4,P):- puzzle4(P).
+puzzle(1,Puzzle):- puzzle1(Puzzle).
+puzzle(2,Puzzle):- puzzle2(Puzzle).
+puzzle(3,Puzzle):- puzzle3(Puzzle).
+puzzle(4,Puzzle):- puzzle4(Puzzle).
