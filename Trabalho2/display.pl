@@ -7,8 +7,8 @@ printPuzzle(Size, Board) :-
 	printCells(Board, 0).
 
 /* Tabuleiro */
-printCells([],_).
 
+printCells([],_).
 printCells([Line|Board], Currentline) :-
 	space(3),
 	printLine(Line, Currentline),
@@ -19,76 +19,29 @@ printCells([Line|Board], Currentline) :-
 /* Linhas */
 
 printLine([], _).
-
-printLine([Cell|Rest], Currentline) :-
+printLine([Cell|Rest], Currentcol) :-
 	printArrow(Cell),
-	Nextline is Currentline+1,
-	printLine(Rest, Nextline).
+	Nextcol is Currentcol+1,
+	printLine(Rest, Nextcol).
 
 /* Peças e divisões */
-printArrow([1,0|Tail]) :-
-	right_white,
-	space(1).
 
-printArrow([1,1|Tail]) :-
-	right_tan,
-	space(1).
-
-printArrow([2,1|Tail]) :-
-	downright_tan,
-	space(1).
-
-printArrow([2,0|Tail]) :-
-	downright_white,
-	space(1).
-
-printArrow([3,0|Tail]) :-
-	downleft_white,
-	space(1).
-
-printArrow([3,1|Tail]) :-
-	downleft_tan,
-	space(1).
-
-printArrow([4,1|Tail]) :-
-	left_tan,
-	space(1).
-
-printArrow([4,0|Tail]) :-
-	left_white,
-	space(1).
-
-printArrow([5,0|Tail]) :-
-	upleft_white,
-	space(1).
-
-printArrow([5,1|Tail]) :-
-	upleft_tan,
-	space(1).
-
-printArrow([6,1|Tail]) :-
-	upright_tan,
-	space(1).
-
-printArrow([6,0|Tail]) :-
-	upright_white,
-	space(1).
-
-printArrow([8,0|Tail]) :-
-	up_white,
-	space(1).
-
-printArrow([8,1|Tail]) :-
-	up_tan,
-	space(1).
-
-printArrow([7,1|Tail]) :-
-	down_tan,
-	space(1).
-
-printArrow([7,0|Tail]) :-
-	down_white,
-	space(1).
+printArrow([1,0]) :- right_white, space(1).
+printArrow([1,1]) :- right_tan, space(1).
+printArrow([2,1]) :- downright_tan,	space(1).
+printArrow([2,0]) :- downright_white, space(1).
+printArrow([3,0]) :- downleft_white, space(1).
+printArrow([3,1]) :- downleft_tan, space(1).
+printArrow([4,1]) :- left_tan, space(1).
+printArrow([4,0]) :- left_white, space(1).
+printArrow([5,0]) :- upleft_white, space(1).
+printArrow([5,1]) :- upleft_tan, space(1).
+printArrow([6,1]) :- upright_tan, space(1).
+printArrow([6,0]) :- upright_white, space(1).
+printArrow([7,0]) :- down_white, space(1).
+printArrow([7,1]) :- down_tan, space(1).
+printArrow([8,0]) :- up_white, space(1).
+printArrow([8,1]) :- up_tan, space(1).
 
 /* Characteres */
 
@@ -121,3 +74,67 @@ downright_white :- put_code(8664).
 
 space(0).
 space(N) :- write(' '), N1 is N-1, space(N1).
+
+/* MAIN MENU */
+
+mainMenu :-
+	nl,
+	nl, write('----------------------------------'),
+	nl, write('|      WHITE AND TAN PUZZLES     |'),
+	nl, write('|--------------------------------|'),
+	nl, write('|                                |'),
+	nl, write('| 1. Exemplo 1      2. Exemplo 2 |'),
+	nl, write('| 3. Exemplo 3      4. Exemplo 4 |'),
+	nl, write('|           5. Random            |'),
+	nl, write('----------------------------------'),nl.
+
+puzzleOption(1, P) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 1:'), 
+	puzzle1(P),
+	nl, nl,
+	printPuzzle(4, P), nl.
+
+puzzleOption(2, P) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 2:'), 
+	puzzle2(P),
+	nl, nl,
+	printPuzzle(4, P), nl.
+
+puzzleOption(3, P) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 3:'), 
+	puzzle3(P),
+	nl, nl,
+	printPuzzle(4, P), nl.
+
+puzzleOption(4, P) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 4:'),
+	puzzle4(P),
+	nl, nl,
+	printPuzzle(4, P), nl.
+
+puzzleOption(5, P) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 5:'),
+	random(1, 5, R),
+	puzzle(R, P),
+	nl, nl,
+	printPuzzle(4, P), nl.
+
+puzzle(1,P):- puzzle1(P).
+puzzle(2,P):- puzzle2(P).
+puzzle(3,P):- puzzle3(P).
+puzzle(4,P):- puzzle4(P).

@@ -1,0 +1,1 @@
+https://erich-friedman.github.io/puzzle/whitetan/

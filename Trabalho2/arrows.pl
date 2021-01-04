@@ -27,24 +27,24 @@ aponta(2, Lin, Col, Cor, Puzzle, Lista) :-
 	newCol is Col + 1,
 	getPos(Lin, newCol, Puzzle, Cell),
 	(var(Cell) -> aponta(2, NewLine, Col, Cor, Puzzle, [Cell|Lista]);
-	aponta(2, Lin, newCol, Cor, Puzzle, Lista));
+	aponta(2, Lin, newCol, Cor, Puzzle, Lista)),
 	
-	(newLin is Lin + 1,
+	newLin is Lin + 1,
 	getPos(newLin, newCol, Puzzle, Cell),
 	(var(Cell) -> aponta(2, NewLine, Col, Cor, Puzzle, [Cell|Lista]);					
-	aponta(2, newLin, newCol, Cor, Puzzle, Lista))).
+	aponta(2, newLin, newCol, Cor, Puzzle, Lista)).
 	
 %Arrow points down left 
 aponta(3, Lin, Col, Cor, Puzzle, Lista) :-
 	newCol is Col + 1,
 	getPos(Lin, newCol, Puzzle, Cell),
 	(var(Cell) -> aponta(3, NewLine, Col, Cor, Puzzle, [Cell|Lista]);
-	aponta(3, Lin, newCol, Cor, Puzzle, Lista));
+	aponta(3, Lin, newCol, Cor, Puzzle, Lista)),
 	
-	(newLin is Lin-1,
+	newLin is Lin-1,
 	getPos(newLin, newCol, Puzzle, Cell),
 	(var(Cell) -> aponta(3, NewLine, Col, Cor, Puzzle, [Cell|Lista]);
-	aponta(3, newLin, newCol, Cor, Puzzle, Lista))).
+	aponta(3, newLin, newCol, Cor, Puzzle, Lista)).
 
 %Arrow points left
 aponta(4, Lin, Col, Cor, Puzzle, Lista) :-
@@ -58,24 +58,24 @@ aponta(5, Lin, Col, Cor, Puzzle, Lista) :-
 	newCol is Col - 1,
 	getPos(Lin, newCol, Puzzle, Cell),
 	(var(Cell) -> aponta(5, NewLine, Col, Cor, Puzzle, [Cell|Lista]);
-	aponta(5, Lin, newCol, Cor, Puzzle, Lista));
+	aponta(5, Lin, newCol, Cor, Puzzle, Lista)),
 	
-	(newLin is Lin - 1,
+	newLin is Lin - 1,
 	getPos(newLin, newCol, Puzzle, Cell),
 	(var(Cell) -> aponta(5, NewLine, Col, Cor, Puzzle, [Cell|Lista]);
-	aponta(5, newLin, newCol, Cor, Puzzle, Lista))).
+	aponta(5, newLin, newCol, Cor, Puzzle, Lista)).
 	
 %Arrow points up right
 aponta(6, Lin, Col, Cor, Puzzle, Lista) :-
 	newCol is Col - 1,
 	getPos(Lin, newCol, Puzzle, Cell),
 	(var(Cell) -> aponta(6, NewLine, Col, Cor, Puzzle, [Cell|Lista]);
-	aponta(6, Lin, newCol, Cor, Puzzle, Lista));
+	aponta(6, Lin, newCol, Cor, Puzzle, Lista)),
 	
-	(newLin is Lin + 1,
+	newLin is Lin + 1,
 	getPos(newLin, newCol, Puzzle, Cell),
 	(var(Cell) -> aponta(6, NewLine, Col, Cor, Puzzle, [Cell|Lista]);
-	aponta(6, newLin, newCol, Cor, Puzzle, Lista))).
+	aponta(6, newLin, newCol, Cor, Puzzle, Lista)).
 
 getPos(Lin, Col, Puzzle, Cell) :-
 	nth1(Col, Puzzle, Lin),
