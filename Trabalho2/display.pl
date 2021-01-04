@@ -80,12 +80,17 @@ space(Num) :- write(' '), Num1 is Num-1, space(Num1).
 mainMenu :-
 	nl,
 	nl, write('----------------------------------'),
+	nl, write('|                                |'),
 	nl, write('|      WHITE AND TAN PUZZLES     |'),
+	nl, write('|                                |'),
 	nl, write('|--------------------------------|'),
 	nl, write('|                                |'),
-	nl, write('| 1. Exemplo 1      2. Exemplo 2 |'),
-	nl, write('| 3. Exemplo 3      4. Exemplo 4 |'),
-	nl, write('|           5. Random            |'),
+	nl, write('|  Each puzzle is represented by |'),
+	nl, write('|    a number between 1 and 15   |'),
+	nl, write('|                                |'),
+	nl, write('|    Pick one of those numbers   |'),
+	nl, write('|   so we can solve the puzzle   |'),
+	nl, write('|                                |'),
 	nl, write('----------------------------------'),nl.
 
 puzzleOption(1, Puzzle) :-
@@ -128,8 +133,109 @@ puzzleOption(5, Puzzle) :-
 	write('White Arrows: '), right_white, write('   '),
 	write('Tan Arrows: '), right_tan, nl,
 	nl,
-	write('Puzzle 5:'),
-	random(1, 5, R),
+	write('Puzzle 5:'), 
+	puzzle5(Puzzle),
+	nl, nl,
+	printPuzzle(4, Puzzle), nl.
+
+puzzleOption(6, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 6:'), 
+	puzzle6(Puzzle),
+	nl, nl,
+	printPuzzle(4, Puzzle), nl.
+
+puzzleOption(7, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 7:'), 
+	puzzle7(Puzzle),
+	nl, nl,
+	printPuzzle(4, Puzzle), nl.
+
+puzzleOption(8, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 8:'),
+	puzzle8(Puzzle),
+	nl, nl,
+	printPuzzle(4, Puzzle), nl.
+
+puzzleOption(9, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 9:'), 
+	puzzle9(Puzzle),
+	nl, nl,
+	printPuzzle(4, Puzzle), nl.
+
+puzzleOption(10, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 10:'), 
+	puzzle10(Puzzle),
+	nl, nl,
+	printPuzzle(4, Puzzle), nl.
+
+puzzleOption(11, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 11:'),
+	puzzle11(Puzzle),
+	nl, nl,
+	printPuzzle(4, Puzzle), nl.
+
+puzzleOption(12, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 12:'), 
+	puzzle12(Puzzle),
+	nl, nl,
+	printPuzzle(4, Puzzle), nl.
+
+/*
+puzzleOption(13, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 13:'), 
+	puzzle13(Puzzle),
+	nl, nl,
+	printPuzzle(5, Puzzle), nl.
+
+puzzleOption(14, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 14:'),
+	puzzle14(Puzzle),
+	nl, nl,
+	printPuzzle(5, Puzzle), nl.
+
+puzzleOption(15, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Puzzle 15:'),
+	puzzle15(Puzzle),
+	nl, nl,
+	printPuzzle(5, Puzzle), nl.
+*/
+
+puzzleOption(0, Puzzle) :-
+	write('White Arrows: '), right_white, write('   '),
+	write('Tan Arrows: '), right_tan, nl,
+	nl,
+	write('Random Puzzle:'),
+	random(1, 13, R),
 	puzzle(R, Puzzle),
 	nl, nl,
 	printPuzzle(4, Puzzle), nl.
@@ -138,3 +244,14 @@ puzzle(1,Puzzle):- puzzle1(Puzzle).
 puzzle(2,Puzzle):- puzzle2(Puzzle).
 puzzle(3,Puzzle):- puzzle3(Puzzle).
 puzzle(4,Puzzle):- puzzle4(Puzzle).
+puzzle(5,Puzzle):- puzzle5(Puzzle).
+puzzle(6,Puzzle):- puzzle6(Puzzle).
+puzzle(7,Puzzle):- puzzle7(Puzzle).
+puzzle(8,Puzzle):- puzzle8(Puzzle).
+puzzle(9,Puzzle):- puzzle9(Puzzle).
+puzzle(10,Puzzle):- puzzle10(Puzzle).
+puzzle(11,Puzzle):- puzzle11(Puzzle).
+puzzle(12,Puzzle):- puzzle12(Puzzle).
+puzzle(13,Puzzle):- puzzle13(Puzzle).
+puzzle(14,Puzzle):- puzzle14(Puzzle).
+puzzle(15,Puzzle):- puzzle15(Puzzle).

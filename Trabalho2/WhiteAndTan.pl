@@ -13,7 +13,7 @@ puzzle :- mainMenu, menu.
 
 /* MENU */
 menu :-
-	menuInput(Option, 1, 5),
+	menuInput(Option, 1, 14),
 	NOption is Option-48,
 	puzzle(NOption, Puzzle),
 	solve(Puzzle).
