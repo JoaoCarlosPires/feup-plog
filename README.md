@@ -1,4 +1,12 @@
 # feup-plog
+ 
+This programs were created during the **1st semester** of the **3rd year** of **Integrated Master in Informatics and Computing Engineering**, in **Logic Programming** curricular unity (FEUP).
+
+[PLOG FEUP-Sigarra](https://sigarra.up.pt/feup/en/UCURR_GERAL.FICHA_UC_VIEW?pv_ocorrencia_id=272714 "Curricular Unity Homepage")
+
+## Contributors
+
+All the work developed during this curricular unit was made side-by-side with [Marta Santos](https://github.com/martandradelobo "Github Profile").
 
 ## Practical Classes
 
