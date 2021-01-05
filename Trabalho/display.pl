@@ -14,13 +14,13 @@ printLetters(Size, Size) :-
 	printLetter(Size, Size).
 
 printLetter(1, Size) :-
-	space(4),
+	space(3),
 	C is 65+Size-1,
 	put_code(C),
 	space(3), nl.
 
 printLetter(Line, Size) :-
-	space(4),
+	space(3),
 	C is 65+Size-Line,
 	put_code(C),
 	space(3),
@@ -58,7 +58,7 @@ printPiece([1|Tail]) :-
 printPiece([2|Tail]) :-
 	div,
 	whitePiece,
-	write(' -'),
+	write('-'),
 	size(Tail, 0),
 	space(3).
 
@@ -87,7 +87,7 @@ whitePiece :- put_code(11044).
 space(0).
 space(N) :- write(' '), N1 is N-1, space(N1).
 
-/* Menu and Play Mode */
+/* Main, Header, Difficulty and Play Mode menus*/
 
 drawHeader :- 
 	nl,
@@ -119,3 +119,15 @@ playMode(3) :-
 	nl, nl,
 	write('Computer 1: '), redPiece, write('   '),
 	write('Computer 2: '), whitePiece, nl.
+
+displayDifficulty :-
+	write('*'), write('*************************************'), write('*'), nl,
+	write('*'), space(8), write('Choose Difficulty'), space(12), write('*'), nl,
+	write('*'), space(8), write('1. Normal Difficulty'), space(9), write('*'), nl,
+	write('*'), space(8), write('2. Hard Difficulty'), space(11), write('*'), nl,
+	write('*'), write('*************************************'), write('*'), nl.
+
+getCol(0) :- write('A').
+getCol(1) :- write('B').
+getCol(2) :- write('C').
+getCol(3) :- write('D').

@@ -101,72 +101,71 @@ get_element_matrix(Matrix, Row, Column, Element) :-
 /* END */
 
 writeToFile(Content, 1) :-
-    open('~/Documentos/PLOG/Trabalho/player1.txt', append, Out),
+    open('~/Desktop/feup-plog/Trabalho/files/player1.txt', append, Out),
     write(Out,Content),
     write(Out,'.\n'),
     close(Out).
 
 writeToFile(Content, 2) :-
-    open('~/Documentos/PLOG/Trabalho/player2.txt', append, Out),
+    open('~/Desktop/feup-plog/Trabalho/files/player2.txt', append, Out),
     write(Out,Content),
     write(Out,'.\n'),
     close(Out).  
 
 writeToFile(Content, 3) :-
-    open('~/Documentos/PLOG/Trabalho/moves.txt', append, Out),
+    open('~/Desktop/feup-plog/Trabalho/files/moves.txt', append, Out),
     write(Out,Content),
     write(Out,'.\n'),
     close(Out).      
 
 resetFile(1) :- 
-    open('~/Documentos/PLOG/Trabalho/player1.txt', write, Out),
-    write(Out,''),
-    close(Out),
-    open('~/Documentos/PLOG/Trabalho/player2.txt', write, Out2),
-    write(Out2,''),
-    close(Out2).
+    open('~/Desktop/feup-plog/Trabalho/files/player1.txt', write, P1),
+    write(P1,''),
+    close(P1),
+    open('~/Desktop/feup-plog/Trabalho/files/player2.txt', write, P2),
+    write(P2,''),
+    close(P2).
 
 resetFile(2) :- 
-    open('~/Documentos/PLOG/Trabalho/moves.txt', write, Out),
-    write(Out,''),
-    close(Out).
+    open('~/Desktop/feup-plog/Trabalho/files/moves.txt', write, Moves),
+    write(Moves,''),
+    close(Moves).
 
 readFile(1, Lines) :-
-    open('~/Documentos/PLOG/Trabalho/player1.txt', read, In),
+    open('~/Desktop/feup-plog/Trabalho/files/player1.txt', read, In),
     read_file(In,Lines),
     close(In).
 
 readFile(2, Lines) :-
-    open('~/Documentos/PLOG/Trabalho/player2.txt', read, In),
+    open('~/Desktop/feup-plog/Trabalho/files/player2.txt', read, In),
     read_file(In,Lines),
     close(In).
 
 readFile(3, Lines) :-
-    open('~/Documentos/PLOG/Trabalho/moves.txt', read, In),
+    open('~/Desktop/feup-plog/Trabalho/files/moves.txt', read, In),
     read_file(In,Lines),
     close(In).
 
 % The read_file predicate is based on
 % https://stackoverflow.com/questions/4805601/read-a-file-line-by-line-in-prolog
 read_file(Stream,[]) :-
-    at_end_of_stream(Stream).
+    at_end_of_stream(Stream), !.
 
 read_file(Stream,[X|L]) :-
-    \+ at_end_of_stream(Stream),
     read(Stream,X),
     read_file(Stream,L).
 
-getWinner([], _, 0) :- write('Player 2!\n').
-getWinner([], _, 1) :- write('Player 1!\n').
+getWinner([], _, 0) :- write('The winner is Player 2!\n').
+getWinner([], _, 1) :- write('The winner is Player 1!\n').
 
-getWinner(_, [], 1) :- write('Player 1!\n').
-getWinner(_, [], 0) :- write('Player 2!\n').
+getWinner(_, [], 1) :- write('The winner is Player 1!\n').
+getWinner(_, [], 0) :- write('The winner is Player 2!\n').
 
 getWinner([P1|Rest1], [P2|Rest2], LastPlayer) :-
 	(P1 =:= P2
 		-> getWinner(Rest1, Rest2, LastPlayer)
 		; (P1 > P2
-			-> write('Player 1!\n')
-			; write('Player 2!\n')
+			-> write('The winner is Player 1!\n')
+			; write('The winner is Player 2!\n')
 		)
 	).
